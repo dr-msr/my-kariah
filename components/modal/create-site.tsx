@@ -18,6 +18,7 @@ export default function CreateSiteModal() {
     name: "",
     subdomain: "",
     description: "",
+	postcode: "",
   });
 
   useEffect(() => {
@@ -37,31 +38,31 @@ export default function CreateSiteModal() {
           if (res.error) {
             toast.error(res.error);
           } else {
-            va.track("Created Site");
+            va.track("Created Kariah");
             const { id } = res;
             router.refresh();
             router.push(`/site/${id}`);
             modal?.hide();
-            toast.success(`Successfully created site!`);
+            toast.success(`Successfully created kariah!`);
           }
         })
       }
       className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-stone-200 md:shadow dark:md:border-stone-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
-        <h2 className="font-cal text-2xl dark:text-white">Create a new site</h2>
+        <h2 className="font-cal text-2xl dark:text-white">Create a new Kariah</h2>
 
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="name"
             className="text-sm font-medium text-stone-500 dark:text-stone-400"
           >
-            Site Name
+            Kariah Name
           </label>
           <input
             name="name"
             type="text"
-            placeholder="My Awesome Site"
+            placeholder="Nama Kariah (Masjid atau Surau)"
             autoFocus
             value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
@@ -76,13 +77,13 @@ export default function CreateSiteModal() {
             htmlFor="subdomain"
             className="text-sm font-medium text-stone-500"
           >
-            Subdomain
+            URL
           </label>
           <div className="flex w-full max-w-md">
             <input
               name="subdomain"
               type="text"
-              placeholder="subdomain"
+              placeholder="Alamat URL"
               value={data.subdomain}
               onChange={(e) => setData({ ...data, subdomain: e.target.value })}
               autoCapitalize="off"
@@ -106,7 +107,7 @@ export default function CreateSiteModal() {
           </label>
           <textarea
             name="description"
-            placeholder="Description about why my site is so awesome"
+            placeholder="Description about the kariah."
             value={data.description}
             onChange={(e) => setData({ ...data, description: e.target.value })}
             maxLength={140}
@@ -114,6 +115,27 @@ export default function CreateSiteModal() {
             className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
           />
         </div>
+
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="postcode"
+            className="text-sm font-medium text-stone-500 dark:text-stone-400"
+          >
+            Kariah Postcode
+          </label>
+          <input
+            name="postcode"
+            type="text"
+            placeholder="Poskod Kawasan Kariah"
+            autoFocus
+            value={data.postcode}
+            onChange={(e) => setData({ ...data, postcode: e.target.value })}
+            maxLength={5}
+            required
+            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+          />
+        </div>
+
       </div>
       <div className="flex items-center justify-end rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 md:px-10">
         <CreateSiteFormButton />
@@ -133,7 +155,7 @@ function CreateSiteFormButton() {
       )}
       disabled={pending}
     >
-      {pending ? <LoadingDots color="#808080" /> : <p>Create Site</p>}
+      {pending ? <LoadingDots color="#808080" /> : <p>Create Kariah</p>}
     </button>
   );
 }

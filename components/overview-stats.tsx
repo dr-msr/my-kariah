@@ -1,8 +1,11 @@
 "use client";
 
 import { random } from "@/lib/utils";
-import { Card, Metric, Text, AreaChart, BadgeDelta, Flex } from "@tremor/react";
+import { Card, Metric, Text, AreaChart, BadgeDelta, Flex, Callout } from "@tremor/react";
 import { useMemo } from "react";
+import { FaExclamation } from "react-icons/fa6";
+
+const isConfigured : boolean = false
 
 export default function OverviewStats() {
   const data = useMemo(() => {
@@ -19,39 +22,54 @@ export default function OverviewStats() {
     ];
   }, []);
 
-  return (
-    <div className="grid gap-6 sm:grid-cols-2">
-      <Card className="dark:!bg-stone-900">
-        <Text>Total Visitors</Text>
-        <Flex
-          className="space-x-3 truncate"
-          justifyContent="start"
-          alignItems="baseline"
-        >
-          <Metric className="font-cal">170,418</Metric>
-          <BadgeDelta
-            deltaType="moderateIncrease"
-            className="dark:bg-green-900 dark:bg-opacity-50 dark:text-green-400"
-          >
-            34.3%
-          </BadgeDelta>
-        </Flex>
-        <AreaChart
-          className="mt-6 h-28"
-          data={data}
-          index="Month"
-          valueFormatter={(number: number) =>
-            `${Intl.NumberFormat("us").format(number).toString()}`
-          }
-          categories={["Total Visitors"]}
-          colors={["blue"]}
-          showXAxis={true}
-          showGridLines={false}
-          startEndOnly={true}
-          showYAxis={false}
-          showLegend={false}
-        />
-      </Card>
-    </div>
-  );
+  if (!isConfigured) {
+	return (
+		<Callout
+        className="h-12 mt-4"
+        title="Analytics API not set yet. Configure this in overview-stats.tsx"
+        icon={FaExclamation}
+        color="rose"
+      >
+      </Callout>
+	);
+  } else {
+	return (
+	
+		<div className="grid gap-6 sm:grid-cols-2">
+		  <Card className="dark:!bg-stone-900">
+			<Text>Total Visitors</Text>
+			<Flex
+			  className="space-x-3 truncate"
+			  justifyContent="start"
+			  alignItems="baseline"
+			>
+			  <Metric className="font-cal">170,418</Metric>
+			  <BadgeDelta
+				deltaType="moderateIncrease"
+				className="dark:bg-green-900 dark:bg-opacity-50 dark:text-green-400"
+			  >
+				34.3%
+			  </BadgeDelta>
+			</Flex>
+			<AreaChart
+			  className="mt-6 h-28"
+			  data={data}
+			  index="Month"
+			  valueFormatter={(number: number) =>
+				`${Intl.NumberFormat("us").format(number).toString()}`
+			  }
+			  categories={["Total Visitors"]}
+			  colors={["blue"]}
+			  showXAxis={true}
+			  showGridLines={false}
+			  startEndOnly={true}
+			  showYAxis={false}
+			  showLegend={false}
+			/>
+		  </Card>
+		</div>
+	  );
+  }
+
+  
 }
