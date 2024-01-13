@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "./providers";
 import { Metadata } from "next";
 import { cn } from "@/lib/utils";
+import favico from "@/public/favico/favicon.ico"
 
 const title =
   "Kariah.me : Laman Sehenti Untuk Kegunaan Ahli Kariah Kawasan Anda";
@@ -14,7 +15,7 @@ const image = "https://vercel.pub/thumbnail.png";
 export const metadata: Metadata = {
   title,
   description,
-  icons: ["https://vercel.pub/favicon.ico"],
+  icons: ["https://kariah.me/favicon.ico"],
   openGraph: {
     title,
     description,
