@@ -9,10 +9,11 @@ import Image from "next/image";
 import { Grid, Title, TabGroup, TabList, Tab, TabPanels, TabPanel, Card, Text } from "@tremor/react";
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
+import WaktuSolat from "@/components/module/waktuSolat";
 
-const Map = dynamic(() => import("../../components/module/map"), {
-    ssr: false
-  });
+// const Map = dynamic(() => import("../../components/module/map"), {
+//     ssr: false
+//   });
 
 export async function generateStaticParams() {
   const allSites = await prisma.site.findMany({
@@ -75,7 +76,7 @@ export default async function SiteHomePage({
 		  <Card>
 			{/* Placeholder to set height */}
 			<div className="h-28">
-				<div style={{maxWidth:100, maxHeight:100}}><Map /></div>
+				<WaktuSolat postcode={data.postcode} />
 			</div>
 		  </Card>
 		  <Card>

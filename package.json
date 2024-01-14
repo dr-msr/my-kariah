@@ -26,6 +26,7 @@
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.292.0",
+    "malaysia-postcodes": "^2.3.0",
     "nanoid": "^4.0.2",
     "next": "14.0.2",
     "next-auth": "4.24.5",

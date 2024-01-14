@@ -32,6 +32,7 @@ export const createSite = async (formData: FormData) => {
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
   const postcode = formData.get("postcode") as string;
+  const zonsolat = formData.get("zonsolat") as string;
 
   try {
     const response = await prisma.site.create({
@@ -45,6 +46,7 @@ export const createSite = async (formData: FormData) => {
           },
         },
 		postcode,
+		zonsolat,
       },
     });
     await revalidateTag(

@@ -107,6 +107,7 @@ model Site {
   userId        String?
   posts         Post[]
   postcode		String?
+  zonsolat		String?
 
   @@index([userId])
 }
