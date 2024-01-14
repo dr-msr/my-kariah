@@ -11,18 +11,29 @@ import va from "@vercel/analytics";
 import { useEffect, useState } from "react";
 import { SearchSelect, SearchSelectItem } from "@tremor/react";
 import { ZonSolat } from "@/lib/waktuSolat";
+import GooglePlacesAutocomplete, { getLatLng, geocodeByPlaceId } from 'react-google-places-autocomplete';
+import { Option } from "react-google-places-autocomplete/build/types";
+import { SingleValue } from "react-select";
 
 export default function CreateSiteModal() {
-  const router = useRouter();
+	const [value, setValue] = useState<SingleValue<Option> | null>(null); // Initialize with null or an appropriate initial value
+	const [gps, setGps] = useState({
+		lat : 0,
+		lon : 0,
+	})
+	const [add, setAdd] = useState('');
+	const router = useRouter();
   const modal = useModal();
 
   const [data, setData] = useState({
     name: "",
     subdomain: "",
-    description: "",
-	zonsolat: "",
-	postcode: "",
+	address : "",
+	placeID : "",
+	gpsLat : 0,
+	gpsLng : 0,
   });
+
 
   useEffect(() => {
     setData((prev) => ({
@@ -34,10 +45,58 @@ export default function CreateSiteModal() {
     }));
   }, [data.name]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+		try {
+		  const response = await fetch(
+			'https://maps.googleapis.com/maps/api/geocode/json?place_id=' + data.placeID + '&region=my&key=' + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY
+		  );
+  
+		  if (!response.ok) {
+			throw new Error('Network response was not ok');
+		  }
+  
+		  const result = await response.json();
+		  console.log(result);
+		  setData((prev) => ({
+			...prev,
+			gpsLat : result.results[0].geometry.location.lat,
+			gpsLng : result.results[0].geometry.location.lng
+		  }))
+		} catch (error) {
+		  console.error('Error fetching data:', error);
+		}
+	  };
+  
+	  fetchData();
+  }, [data.placeID]);
+
+
+  
+  async function getGPS(input : SingleValue<Option>) {
+	try {
+		const results = await geocodeByPlaceId(input?.value.place_id);
+		const { lat, lng } = await getLatLng(results[0]);
+
+		return { lat : lat, lon: lng };
+
+
+
+	  } catch (error) {
+		console.error(error);
+	  }
+	}	
+
+
+  function getAddress(input : SingleValue<Option>) {
+	return input?.value.structured_formatting.secondary_text
+  }
+
 
   return (
     <form
-      action={async (data: FormData) =>
+      action={async (data: FormData) => {
+		console.log(data)
         createSite(data).then((res: any) => {
           if (res.error) {
             toast.error(res.error);
@@ -48,8 +107,10 @@ export default function CreateSiteModal() {
             router.push(`/site/${id}`);
             modal?.hide();
             toast.success(`Successfully created kariah!`);
+			console.log(res);
+			console.log(data);
           }
-        })
+        })}
       }
       className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-stone-200 md:shadow dark:md:border-stone-700"
     >
@@ -120,7 +181,7 @@ export default function CreateSiteModal() {
           />
         </div> */}
 
-		<div className="flex flex-col space-y-2">
+		{/* <div className="flex flex-col space-y-2">
           <label
             htmlFor="zonsolat"
             className="text-sm font-medium text-stone-500 dark:text-stone-400"
@@ -132,27 +193,105 @@ export default function CreateSiteModal() {
 				<SearchSelectItem value={item.jakimCode}>{item.jakimCode} : {item.negeri} - {item.daerah}</SearchSelectItem>
 			))}
 		  </SearchSelect>
-        </div>
+        </div> */}
 
 		<div className="flex flex-col space-y-2">
           <label
             htmlFor="postcode"
             className="text-sm font-medium text-stone-500 dark:text-stone-400"
           >
-            Postcode
+            Search Location
           </label>
-          <input
-            name="postcode"
-            type="text"
-            placeholder="Poskod"
-            autoFocus
-            value={data.postcode}
-            onChange={(e) => setData({ ...data, postcode: e.target.value })}
-            maxLength={5}
-            required
-            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+		  
+		  <GooglePlacesAutocomplete
+        	apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}
+			autocompletionRequest={{
+				componentRestrictions: {
+					country: ['my'],
+				}
+			  }}
+			  selectProps={{
+				value,
+				// onChange: (value) => setValue(value),
+				onChange: (value) => {
+					console.log(value);
+					setData({
+						...data, 
+						address : value ? value.value.structured_formatting.secondary_text : "Empty" ,
+						placeID : value ? value.value.place_id : "Empty",
+					
+					 }),
+					 setValue(value)
+				},
+			  }}
+			 />
+        </div>
+
+		<div style={{display:'none'}}>
+          <label
+            htmlFor="address"
+            className="text-sm font-medium text-stone-500"
+          >
+            Address
+          </label>
+          <textarea
+            name="address"
+            placeholder="Address about the kariah."
+            value={data.address}
+            onChange={(e) => setData({ ...data, address: e.target.value })}
+            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
           />
         </div>
+
+		<div style={{display:'none'}}>
+          <label
+            htmlFor="placeID"
+            className="text-sm font-medium text-stone-500"
+          >
+            PlaceID
+          </label>
+          <textarea
+            name="placeID"
+            placeholder="PlaceID about the kariah."
+            value={data.placeID}
+            onChange={(e) => setData({ ...data, placeID: e.target.value })}
+            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+          />
+        </div>
+
+		<div style={{display: 'none'}}>
+          <label
+            htmlFor="gpsLat"
+            className="text-sm font-medium text-stone-500"
+          >
+            GPS Latitude
+          </label>
+          <textarea
+            name="gpsLat"
+            placeholder="PlaceID about the kariah."
+            value={data.gpsLat}
+            onChange={(e) => setData({ ...data, gpsLat: parseFloat(e.target.value) })}
+            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+          />
+        </div>
+
+		<div style={{ display : 'none'}}>
+          <label
+            htmlFor="gpsLng"
+            className="text-sm font-medium text-stone-500"
+          >
+            GPS Longitude
+          </label>
+          <textarea
+            name="gpsLng"
+            placeholder="PlaceID about the kariah."
+            value={data.gpsLng}
+            onChange={(e) => setData({ ...data, gpsLng: parseFloat(e.target.value) })}
+            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+          />
+        </div>
+
+
 
       </div>
       <div className="flex items-center justify-end rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 md:px-10">

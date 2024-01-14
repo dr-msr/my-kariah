@@ -15,11 +15,13 @@ import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { Post, Site } from "@prisma/client";
+import getGPS from "./maps";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
   7,
 ); // 7-character random string
+
 
 export const createSite = async (formData: FormData) => {
   const session = await getSession();
@@ -29,24 +31,31 @@ export const createSite = async (formData: FormData) => {
     };
   }
   const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
-  const postcode = formData.get("postcode") as string;
-  const zonsolat = formData.get("zonsolat") as string;
+  const address = formData.get("address") as string;
+  const placeID = formData.get("placeID") as string;
+  const gpsLat = parseFloat(formData.get("gpsLat") as string);
+  const gpsLng = parseFloat(formData.get("gpsLng") as string);
+
+//   const gpsLat = await getGPS(formData.get("placeID") as string, "lat");
+//   const gpsLng = await getGPS(formData.get("placeID") as string, "lng");
+
 
   try {
     const response = await prisma.site.create({
       data: {
         name,
-        description,
         subdomain,
         user: {
           connect: {
             id: session.user.id,
           },
         },
-		postcode,
-		zonsolat,
+		address,
+		placeID,
+		gpsLat,
+		gpsLng,
+
       },
     });
     await revalidateTag(

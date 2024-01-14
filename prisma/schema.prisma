@@ -94,6 +94,10 @@ model Site {
   id            String   @id @default(cuid())
   name          String?
   description   String?  @db.Text
+  address		String?	 @db.Text
+  placeID		String?
+  gpsLat		Float?
+  gpsLng		Float?
   logo          String?  @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text
   font          String   @default("font-cal")
   image         String?  @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/hxfcV5V-eInX3jbVUhjAt1suB7zB88uGd1j20b.png") @db.Text
@@ -106,8 +110,7 @@ model Site {
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId        String?
   posts         Post[]
-  postcode		String?
-  zonsolat		String?
+
 
   @@index([userId])
 }
