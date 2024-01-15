@@ -56,8 +56,12 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
     	const minutes = Math.floor((difference % 3600000) / 60000);
     	const seconds = Math.floor((difference % 60000) / 1000);
 
-		setTimerCountdown( hours + ":" + minutes + ":" + seconds)
-
+		const formattedHours = hours.toString().padStart(2, '0');
+		const formattedMinutes = minutes.toString().padStart(2, '0');
+		const formattedSeconds = seconds.toString().padStart(2, '0');
+		
+		setTimerCountdown(formattedHours + ":" + formattedMinutes + ":" + formattedSeconds);
+		
 		if (hours > 0) {
 			setStatusCountdown('indigo')
 		} else {
