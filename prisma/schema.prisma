@@ -27,6 +27,10 @@ model User {
   sites         Site[]
   posts         Post[]
   Event         Event[]
+  phoneNumber   String?   @unique
+  role          String    @default("Registered")
+
+
 }
 
 model Account {
