@@ -20,6 +20,31 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
+
+	{
+		id: 'phone',
+		name: 'Phone',
+		type: 'credentials',
+		credentials: {
+		  phoneNumber: { label: "Phone Number", type: "text" },
+		},
+		authorize: async (credentials: Record<string, string> | undefined) => {
+		  if (!credentials?.phoneNumber) {
+			throw new Error('Missing phone number');
+		  }
+  
+		  const user = await prisma.user.findUnique({
+			where: { phoneNumber: credentials.phoneNumber },
+		  });
+  
+		  if (!user) {
+			throw new Error('User not found');
+		  }
+  
+		  return { id: user.id, name: user.name || null, email: user.email || null };
+		},
+	  },
+
   ],
   pages: {
     signIn: `/login`,
