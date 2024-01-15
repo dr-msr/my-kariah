@@ -184,6 +184,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 		};
 	  
 		fetchData();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, []);
 
 
