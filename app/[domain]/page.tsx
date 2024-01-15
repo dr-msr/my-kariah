@@ -7,13 +7,15 @@ import BlogCard from "@/components/blog-card";
 import { getPostsForSite, getSiteData } from "@/lib/fetchers";
 import Image from "next/image";
 import { Grid, Title, TabGroup, TabList, Tab, TabPanels, TabPanel, Card, Text } from "@tremor/react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import WaktuSolat from "@/components/module/waktuSolat";
 
 // const Map = dynamic(() => import("../../components/module/map"), {
 //     ssr: false
 //   });
+
+
 
 export async function generateStaticParams() {
   const allSites = await prisma.site.findMany({
@@ -57,27 +59,27 @@ export default async function SiteHomePage({
     notFound();
   }
 
- 
-
-
-
   return (     <main className="p-12">
   <Title>{data.name}</Title>
-  <Text>Selamat datang, warga kariah.</Text>
+  <Text>{data.address}.</Text>
 
   <TabGroup className="mt-6">
 	<TabList>
-	  <Tab>Overview</Tab>
-	  <Tab>Detail</Tab>
+	  <Tab>Utama</Tab>
+	  <Tab>Info Lokasi</Tab>
 	</TabList>
 	<TabPanels>
 	  <TabPanel>
-		<Grid numItemsMd={2} numItemsLg={3} className="gap-6 mt-6">
+		<Grid numItemsMd={2} numItemsLg={4} className="gap-6 mt-6">
 		  <Card>
 			{/* Placeholder to set height */}
-			<div className="h-28">
-				<WaktuSolat postcode={data.postcode} />
+			<div className="h-35">
+				<WaktuSolat gpsLat={data.gpsLat} gpsLng={data.gpsLng} />
 			</div>
+		  </Card>
+		  <Card>
+			{/* Placeholder to set height */}
+			<div className="h-28" />
 		  </Card>
 		  <Card>
 			{/* Placeholder to set height */}
