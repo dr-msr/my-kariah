@@ -2,10 +2,10 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider  = "mysql"
-  url       = env("DATABASE_URL") // uses connection pooling
+  provider     = "mysql"
+  url          = env("DATABASE_URL") // uses connection pooling
   relationMode = "prisma"
-  }
+}
 
 generator client {
   provider = "prisma-client-js"
@@ -26,6 +26,7 @@ model User {
   sessions      Session[]
   sites         Site[]
   posts         Post[]
+  Event         Event[]
 }
 
 model Account {
@@ -75,11 +76,32 @@ model Post {
   description   String?  @db.Text
   content       String?  @db.Text
   slug          String   @default(cuid())
-  image         String?  
-  imageBlurhash String?  
+  image         String?
+  imageBlurhash String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   published     Boolean  @default(false)
+  site          Site?    @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  siteId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String?
+
+  @@unique([slug, siteId])
+  @@index([siteId])
+  @@index([userId])
+}
+
+model Event {
+  id            String   @id @default(cuid())
+  title         String?  @db.Text
+  description   String?  @db.Text
+  type          String?  @db.Text
+  slug          String   @default(cuid())
+  image         String?
+  imageBlurhash String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  approved      Boolean  @default(false)
   site          Site?    @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   siteId        String?
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -94,14 +116,14 @@ model Site {
   id            String   @id @default(cuid())
   name          String?
   description   String?  @db.Text
-  address		String?	 @db.Text
-  placeID		String?
-  gpsLat		Float?
-  gpsLng		Float?
+  address       String?  @db.Text
+  placeID       String?
+  gpsLat        Float?
+  gpsLng        Float?
   logo          String?
   font          String   @default("font-cal")
-  image         String?  
-  imageBlurhash String?  
+  image         String?
+  imageBlurhash String?
   subdomain     String?  @unique
   customDomain  String?  @unique
   message404    String?
@@ -110,7 +132,7 @@ model Site {
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId        String?
   posts         Post[]
-
+  Event         Event[]
 
   @@index([userId])
 }

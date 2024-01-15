@@ -1,4 +1,4 @@
-export default function useCors(url: string): string {
+export default function getCors(url: string): string {
 	const corsUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
 	return corsUrl;
   }

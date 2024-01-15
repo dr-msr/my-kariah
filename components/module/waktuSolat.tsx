@@ -1,5 +1,6 @@
 "use client";
 
+import getCors from "@/lib/cors";
 import useCors from "@/lib/cors";
 import { Card, List, ListItem, Metric, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
@@ -154,14 +155,14 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 		const fetchData = async () => {
 		try {
 			const url = "https://api.waktusolat.app/zones/gps?lat=" + input.gpsLat + "&long=" + input.gpsLng
-			const zoneResponse = await fetch(useCors(url));
+			const zoneResponse = await fetch(getCors(url));
 
 			if (!zoneResponse.ok) {
 				throw new Error('Zone network response was not ok');
 			}
 			const zoneResult = await zoneResponse.json();	  
 			const url2 = "https://api.waktusolat.app/v2/solat/" + zoneResult.zone;
-			const waktuSolatResponse = await fetch(useCors(url2));
+			const waktuSolatResponse = await fetch(getCors(url2));
 	  
 			if (!waktuSolatResponse.ok) {
 			  throw new Error('Waktu Solat network response was not ok');
