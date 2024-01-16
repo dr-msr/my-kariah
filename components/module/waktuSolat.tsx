@@ -63,7 +63,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 
 			if (comparedTime > waktuSolat[today].fajr && comparedTime <= waktuSolat[today].dhuhr) {
 				setNextPrayer({ prayer : "Dhuhr", time : convertTime(waktuSolat[today].dhuhr)})
-				setTimerCountdown((waktuSolat[today].dhuhr - comparedTime).toString())
+				getTimerCountdown(comparedTime, waktuSolat[today].dhuhr )
 
 			} else if (comparedTime > waktuSolat[today].dhuhr && comparedTime <= waktuSolat[today].asr)  {
 				setNextPrayer({ prayer : "Asr", time : convertTime(waktuSolat[today].asr)})
