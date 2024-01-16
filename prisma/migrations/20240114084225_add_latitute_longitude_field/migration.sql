@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Site" ADD COLUMN     "gps_lat" DOUBLE PRECISION,
+ADD COLUMN     "gps_lon" DOUBLE PRECISION;
