@@ -30,7 +30,14 @@ type listplace = {
 
 
 const GetKariahGo = ( input : GetKariahGoProps) => {
-	const [listResult, setListResult] = useState<listplace[]>([])
+	const [listResult, setListResult] = useState<listplace[]>([
+		{
+			name : "",
+			subdomain : null,
+			lat : 0,
+			lng : 0,
+		}
+	])
 	const [nearest, setNearest] = useState<any>(null)
 	const [exist, setExist] = useState<any>(null)
 
@@ -69,10 +76,10 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 					console.log(response_db);
 					if (response_db != undefined) {
 						setListResult([{
-							name : response_db? response_db.name : null,
+							name : response_db.name,
 							subdomain : response_db? response_db.subdomain : null,
-							lat : response_db? response_db.gpsLat : null,
-							lng : response_db? response_db.gpsLng : null,
+							lat : response_db.gpsLat,
+							lng : response_db.gpsLng,
 						}])
 
 					}
@@ -123,6 +130,8 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 		<div>
 			<Card className="max-w-xs mx-auto">
     <Text>{listResult[0].name}</Text>
+	<Text>{listResult[0].subdomain ? listResult[0].subdomain : "Not found"}</Text>
+
   </Card>
 
 		</div>

@@ -246,19 +246,16 @@ export const getSiteFromPlaceID = async (search : string, in_name : string, in_l
 			placeID: search,
 		},
 		select: {
-			name: true,
 			subdomain : true,
-			gpsLat : true,
-			gpsLng : true
 		  },
 	});
 
 	if (site) {
 		return {
-			name : site.name,
+			name : in_name,
 			subdomain : site.subdomain,
-			gpsLat : site.gpsLat,
-			gpsLng : site.gpsLng
+			gpsLat : in_lat,
+			gpsLng : in_lng
 		};
 	} else {
 		return {
