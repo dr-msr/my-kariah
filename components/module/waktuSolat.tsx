@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 interface WaktuSolatProps {
 	gpsLat : number | null,
-	gpsLng : number | null
+	gpsLng : number | null,
   }
 
 interface WaktuSolatIF {
@@ -30,6 +30,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 		time : "",
 	})
 	const [statusCountdown, setStatusCountdown] = useState('');
+	const [loaded, setIsLoaded] = useState(false);
 
 	function getTimerCountdown( current : number, upcoming : number){
 		const date1 = new Date(current * 1000);
@@ -169,6 +170,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 			}
 			const waktuSolatResult = await waktuSolatResponse.json();
 			setWaktuSolat(waktuSolatResult.prayers);
+			setIsLoaded(true);
 
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -177,7 +179,9 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	if (waktuSolat[0] == undefined) {
+
+
+	if (loaded === false) {
 		return (<div><Text>Loading..</Text></div>)
 	} else {
 		return (
