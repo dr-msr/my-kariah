@@ -2,6 +2,8 @@ import { getSiteFromPlaceID } from "@/lib/actions";
 import getCors from "@/lib/cors";
 import { Card, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
+import { RadioGroup } from '@headlessui/react'
+
 
 interface GetKariahGoProps {
 	lat : number;
@@ -40,6 +42,7 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 	])
 	const [nearest, setNearest] = useState<any>(null)
 	const [exist, setExist] = useState<any>(null)
+	const [selectedKariah, setSelectedKariah] = useState<listplace>()
 
 	// const response = useQuery({
 	// 	queryKey : [input], 
@@ -127,15 +130,29 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 
 	
 	return (
-		<div>
-			<Card className="max-w-xs mx-auto">
-    <Text>{listResult[0].name}</Text>
-	<Text>{listResult[0].subdomain ? listResult[0].subdomain : "Not found"}</Text>
-
-  </Card>
-
+		<RadioGroup value={selectedKariah} onChange={setSelectedKariah}>
+			<div className="flex flex-col gap-2.5">
+		<RadioGroup.Option value="startup">
+		  {({ checked }) => (
+			<div className={checked ? checkedClass : uncheckedClass}>Startup</div>
+		  )}
+		</RadioGroup.Option>
+		<RadioGroup.Option value="business">
+		  {({ checked }) => (
+			<div className={checked ? checkedClass : uncheckedClass}>Business</div>
+		  )}
+		</RadioGroup.Option>
+		<RadioGroup.Option value="enterprise">
+		  {({ checked }) => (
+			<div className={checked ?checkedClass : uncheckedClass}>Enterprise</div>
+		  )}
+		</RadioGroup.Option>
 		</div>
+	  </RadioGroup>
 	);
 }
 
 export default GetKariahGo
+
+const uncheckedClass = 'border border-solid border-gray-200 rounded-xl p-2 hover:bg-gray-700 hover:text-white'
+const checkedClass = 'border border-solid border-gray-200 rounded-xl p-2 bg-gray-700 text-white'
