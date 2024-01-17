@@ -1,7 +1,6 @@
 "use client";
 
 import getCors from "@/lib/cors";
-import useCors from "@/lib/cors";
 import { Card, List, ListItem, Metric, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
 

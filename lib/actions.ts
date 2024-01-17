@@ -237,6 +237,42 @@ export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
   }
 });
 
+
+
+export const getSiteFromPlaceID = async (search : string, in_name : string, in_lat : number, in_lng : number) => {
+	try {
+	const site =  await prisma.site.findUnique({
+		where: {
+			placeID: search,
+		},
+		select: {
+			name: true,
+			subdomain : true,
+			gpsLat : true,
+			gpsLng : true
+		  },
+	});
+
+	if (site) {
+		return {
+			name : site.name,
+			subdomain : site.subdomain,
+			gpsLat : site.gpsLat,
+			gpsLng : site.gpsLng
+		};
+	} else {
+		return {
+			name : in_name,
+			subdomain : null,
+			gpsLat : in_lat,
+			gpsLng : in_lng
+
+		};	
+	}} catch (error) {
+		console.log(error);
+	}
+}
+
 export const getSiteFromPostId = async (postId: string) => {
   const post = await prisma.post.findUnique({
     where: {

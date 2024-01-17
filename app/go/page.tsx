@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import loadingAnim from '../../public/assets/anims/locateGPS.json';
 import WaktuSolat from "@/components/module/waktuSolat";
+import GetKariahGo from "@/components/module/getKariahGo";
 
 
 
@@ -15,8 +16,8 @@ export default function GoPage() {
 	});
 	const [loadWaktuSolat, setLoadWaktuSolat] = useState(false);
 	const [gps, setGPS] = useState({
-		lat : null,
-		long : null,
+		lat : 0,
+		long : 0,
 	})
 
 	function loadGPS(pos: any) {
@@ -61,7 +62,8 @@ export default function GoPage() {
 			  { loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
 			</Card>
 			<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs md:max-w-full grow">
-			  {/* Content of the second card */}
+				<GetKariahGo lat={gps.lat} lng={gps.long} />
+
 			</Card>
 		  </div>
 		</div>

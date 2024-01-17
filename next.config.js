@@ -4,7 +4,10 @@
 module.exports = {
   experimental: {
     serverActions: {
-      allowedOrigins: ["app.localhost:3000"],
+      allowedOrigins: [
+		"app.localhost:3000",
+		"go.localhost:3000"
+	],
     },
   },
   images: {
