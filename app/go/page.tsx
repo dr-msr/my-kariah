@@ -7,7 +7,6 @@ import loadingAnim from '../../public/assets/anims/locateGPS.json';
 import searchingAnim from '../../public/assets/anims/searching.json';
 import WaktuSolat from "@/components/module/waktuSolat";
 import GetKariahGo from "@/components/module/getKariahGo";
-import { Metadata } from "next";
 import { Transition } from '@headlessui/react'
 import NavSearch from "@/components/nav-search";
 
@@ -43,7 +42,6 @@ export default function GoPage() {
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);		
 	},[])
-
 
 	return (
 	<>	

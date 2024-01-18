@@ -1,10 +1,10 @@
 "use client";
 
 import getCors from "@/lib/cors";
-import { Card, List, ListItem, Metric, Subtitle, Text } from "@tremor/react";
-import { CSSProperties, useEffect, useState } from "react";
+import getDaerahByJakimCode from "@/lib/waktuSolat";
+import { Card, List, ListItem, Metric, Text } from "@tremor/react";
+import { useEffect, useState } from "react";
 import { Transition } from '@headlessui/react'
-import  getDaerahByJakimCode from "@/lib/waktuSolat";
 import { OverlayArrow, Tooltip, TooltipTrigger, Button } from "react-aria-components";
 
 interface WaktuSolatProps {
@@ -23,8 +23,6 @@ interface WaktuSolatIF {
 	isha: number;
   }
 
-
-
 const WaktuSolat = (input :  WaktuSolatProps) => {
 	const [waktuSolat, setWaktuSolat] = useState<WaktuSolatIF[]>([]);
 	const [currentTime, setCurrentTime] = useState<Date>();
@@ -34,9 +32,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 		time : "",
 	})
 	const [statusCountdown, setStatusCountdown] = useState('');
-	const [loaded, setIsLoaded] = useState(false);
 	const [loadCountdown, setLoadingCountdown] = useState(false);
-	const [animateOpacity, setAnimateOpacity ] = useState(0);
 	const [zonSolat, setZonSolate] = useState('')
 
 	function getTimerCountdown( current : number, upcoming : number){
@@ -100,7 +96,6 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	}
 
 	function formatHijri(input : string) {
-
 		const dateParts = input.split('-');	
 		const year = parseInt(dateParts[0], 10);
 		const month = parseInt(dateParts[1], 10);
@@ -181,30 +176,15 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 			const waktuSolatResult = await waktuSolatResponse.json();
 			setWaktuSolat(waktuSolatResult.prayers);
 			setZonSolate(zoneResult.zone);
-			setIsLoaded(true);
 
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}};
 		fetchData();
-		setAnimateOpacity(1);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-
-	// if (loadCountdown === false) {
-	// 	return (
-		
-	// 		<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
-	// 			<p className="w-48 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-	// 			<p className="w-48 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-	// 			<p className="w-48 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-	// 		</div>
-		
-	// 	)
-	// } else {
-		return (
-
+	return (
 			<div style={{display:"flex", flexDirection:"column", gap:10, justifyContent:'center', alignItems:'center'}}>
 	
 			{ !loadCountdown ? (	
@@ -261,6 +241,5 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 			</div>
 		)
 	}
-//}
 
 export default WaktuSolat
