@@ -101,11 +101,9 @@ async function updateListResult() {
 	  
 
 	useEffect(() => {
-		console.log(nearest)
 		if (nearest != undefined) {
 			getSiteFromPlaceID(nearest.place_id, nearest.name, nearest.geometry.location.lat, nearest.geometry.location.lng)
 				.then(async (response_db) => {
-					console.log(response_db);
 					if (response_db != undefined) {
 						updateListResult();
 					}

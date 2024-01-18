@@ -245,7 +245,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 				<div style={{fontSize:12, textAlign:"center"}}><Text style={{textAlign:"center"}}>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text></div>
 				<div style={{fontSize:12, textAlign:"center"}}>
 					<TooltipTrigger>
-						<Button>Zon {zonSolat} : {getDaerahByJakimCode(zonSolat)} </Button>
+						<Button>{zonSolat} : {getDaerahByJakimCode(zonSolat)} </Button>
 						<Tooltip>
 							<OverlayArrow style={{backgroundColor:'#f3f4f6'}}>
 							<svg width={8} height={8} viewBox="0 0 8 8">

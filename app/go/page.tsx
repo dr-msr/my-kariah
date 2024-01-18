@@ -24,7 +24,6 @@ export default function GoPage() {
 	})
 
 	function loadGPS(pos: any) {
-		console.log(pos)
 		setGPS({
 			lat : pos.coords.latitude,
 			long : pos.coords.longitude,
