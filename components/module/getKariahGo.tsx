@@ -1,10 +1,7 @@
 import { getDistance, getSiteFromPlaceID, getSitesSortedByDistance } from "@/lib/actions";
 import getCors from "@/lib/cors";
-import { Card, Text } from "@tremor/react";
 import { SetStateAction, useEffect, useState } from "react";
 import { RadioGroup } from '@headlessui/react'
-import Lottie from "react-lottie";
-import drivingAnim from '../../public/assets/anims/driving.json';
 
 
 interface GetKariahGoProps {
@@ -127,42 +124,9 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 			console.log(error)
 		})
 		}
+// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [nearest])
 
-
-
-	
-	// useEffect(() => {
-	// 	if (exist == null) {
-	// 		setListResult([{
-	// 			name : received.name? received.name : null,
-	// 			subdomain : null,
-	// 			lat : received.geometry.location.lat,
-	// 			lng : received.geometry.location.lng,
-	// 		}])
-		
-	
-	// 	} else {
-	// 		setListResult([{
-	// 			name : exist.data? exist.data.name : null,
-	// 			subdomain : exist.data? exist.data.subdomain : null,
-	// 			lat : exist.data? exist.data.gpsLat : null,
-	// 			lng : exist.data? exist.data.gpsLng : null,
-	// 		}])
-		
-	// 	}
-	
-
-	// },[exist])
-
-
-	
-
-
-	// const distanceResponse = useQuery({
-	// 		queryKey : received,  
-	// 		queryFn : ({ queryKey }) => getDistance(input.lat, input.lng, queryKey.place_id),
-	// 	});
 		
 function convertDistance(input : number) {
 	if (input < 1000) {
