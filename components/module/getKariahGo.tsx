@@ -1,7 +1,7 @@
 import { getDistance, getSiteFromPlaceID, getSitesSortedByDistance } from "@/lib/actions";
 import getCors from "@/lib/cors";
 import { SetStateAction, useEffect, useState } from "react";
-import { RadioGroup } from '@headlessui/react'
+import { RadioGroup, Transition } from '@headlessui/react'
 import { Card, Text } from "@tremor/react";
 
 
@@ -17,8 +17,6 @@ const getNearestMosque = async (lat : number, lng : number) => {
 	return (response.json())
 }
 
-
-
 type listplace = {
 	name : string | null;
 	subdomain : string | null;
@@ -28,8 +26,8 @@ type listplace = {
 	duration : number,
 }
 
-
 const GetKariahGo = ( input : GetKariahGoProps) => {
+	const [loaded, setLoaded] = useState(false);
 	const [listResult, setListResult] = useState<listplace[]>([
 		{
 			name : "",
@@ -41,26 +39,8 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 		}
 	])
 	const [nearest, setNearest] = useState<any>(null)
-	const [exist, setExist] = useState<any>(null)
 	const [selectedKariah, setSelectedKariah] = useState<listplace>()
-	const [distance, setDistance] = useState<Array<any>>([]);
 
-	// const response = useQuery({
-	// 	queryKey : [input], 
-	// 	queryFn : ({ queryKey }) => getNearestMosque(queryKey[0].lat, queryKey[0].lng),
-	// 	});
-	
-	// if (response.data != undefined){
-	// 	setReceived(response.data.results[0])
-	// }
-
-	// useEffect(() => {
-	// 	const exist = useQuery({
-	// 		queryKey : received, 
-	// 		queryFn : ({ queryKey }) => getSiteFromPlaceID(queryKey.place_id),
-	// 	});
-	// 	setExist(exist.data)
-	// },[received])
 
 	useEffect(() => {
 		getNearestMosque(input.lat, input.lng)
@@ -92,11 +72,8 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 		  });
 	  }, [input]);
 
-	  async function updateListResult() {
+async function updateListResult() {
 		const lokasi = await getDistance(input.lat, input.lng, nearest.geometry.location.lat, nearest.geometry.location.lng);
-		console.log(lokasi)	
-		console.log(nearest)
-		
 		if (lokasi && lokasi.routes && lokasi.routes[0] && lokasi.routes[0].legs) {
 		  setListResult(prevState => [{
 			name: nearest.name,
@@ -106,8 +83,9 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 			distance : lokasi.routes[0].legs[0].distance.value,
 			duration : lokasi.routes[0].legs[0].duration.value,
 		  }, ...prevState]);
+		  setLoaded(true);
 		}
-	  }
+}
 	  
 	  
 
@@ -144,6 +122,24 @@ function convertDuration(input : number) {
 }
 	
 	return (
+<>
+		{ !loaded ? (
+			<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
+	 				<p className="w-full p-5 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+	 				<p className="w-full p-5 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+	 				<p className="w-full p-5 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+	 			</div>
+		) : null }
+		<Transition 
+				show={loaded}
+				enter="transition-opacity duration-1000"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="transition-opacity duration-1000"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
+			>
+
 		<RadioGroup value={selectedKariah} onChange={setSelectedKariah}>
 			<div className="flex flex-col gap-2.5">
 
@@ -168,6 +164,8 @@ function convertDuration(input : number) {
 		
 		</div>
 	  </RadioGroup>
+	  </Transition>
+	  </>
 	);
 }
 
