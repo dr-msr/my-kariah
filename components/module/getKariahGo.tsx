@@ -163,7 +163,7 @@ const handleOutro = (url : string | null) => {
 
 			<div className="flex flex-col gap-2.5">
 		{listResult.map((item, index) => (
-			<div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+			<div key={index} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
 				<div className='border border-solid border-gray-200 rounded-lg p-2' style={{display:"flex", flexDirection:"row", justifyContent:"space-between", flexGrow:1}}>
 					
 					<div style={{display:"flex", flexDirection:"column", justifyContent:"center", gap:10}}>
