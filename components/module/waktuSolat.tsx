@@ -233,7 +233,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					</div>
 				</Card>
 
-				<List style={{ width:'100%', paddingLeft:10, paddingRight:10}}>
+				<List className="min-w-md" style={{ width:'100%', paddingLeft:10, paddingRight:10}}>
 					<ListItem><span>Fajr</span><span>{getWaktuSolat('fajr',0)}</span></ListItem>
 					<ListItem><span>Dhuhr</span><span>{getWaktuSolat('dhuhr',0)}</span></ListItem>
 					<ListItem><span>Asar</span><span>{getWaktuSolat('asr',0)}</span></ListItem>
@@ -241,9 +241,11 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					<ListItem><span>Isha</span><span>{getWaktuSolat('isha',0)}</span></ListItem>
 				</List>
 		
+
+				<Text>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
 				<div style={{fontSize:12, textAlign:"center"}}>
 					<TooltipTrigger>
-						<Button>ZON {zonSolat}</Button>
+						<Button>Zon {zonSolat} : {getDaerahByJakimCode(zonSolat)} </Button>
 						<Tooltip>
 							<OverlayArrow style={{backgroundColor:'#f3f4f6'}}>
 							<svg width={8} height={8} viewBox="0 0 8 8">
@@ -254,7 +256,6 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
   						</Tooltip>
 					</TooltipTrigger>
 				</div>
-				<Text>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
 				</Transition>
 
 			</div>

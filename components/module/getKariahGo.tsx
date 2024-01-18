@@ -2,7 +2,10 @@ import { getDistance, getSiteFromPlaceID, getSitesSortedByDistance } from "@/lib
 import getCors from "@/lib/cors";
 import { SetStateAction, useEffect, useState } from "react";
 import { RadioGroup, Transition } from '@headlessui/react'
-import { Card, Text } from "@tremor/react";
+import { Card, Text, Badge, Title, Dialog, DialogPanel, Button } from "@tremor/react";
+import { MapPin, Car, CarTaxiFront, Router } from "lucide-react";
+import { FaMosque } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 
 
@@ -18,16 +21,17 @@ const getNearestMosque = async (lat : number, lng : number) => {
 }
 
 type listplace = {
-	name : string | null;
+	name : string;
 	subdomain : string | null;
-	lat : number | null,
-	lng : number | null,
+	lat : number,
+	lng : number,
 	distance : number,
 	duration : number,
 }
 
 const GetKariahGo = ( input : GetKariahGoProps) => {
 	const [loaded, setLoaded] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 	const [listResult, setListResult] = useState<listplace[]>([
 		{
 			name : "",
@@ -39,7 +43,9 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 		}
 	])
 	const [nearest, setNearest] = useState<any>(null)
-	const [selectedKariah, setSelectedKariah] = useState<listplace>()
+	const [selectedKariah, setSelectedKariah] = useState<listplace>(listResult[0])
+	const [selectedName, setSelectedName] = useState("")
+	const go = useRouter();
 
 
 	useEffect(() => {
@@ -120,6 +126,21 @@ function convertDuration(input : number) {
 
 		return (input/60).toFixed(1) + " min"
 }
+
+
+const handleOutro = (url : string | null) => {
+	var loadUrl = ""
+	if (url) {
+		loadUrl = url
+	} else {
+		loadUrl = "go"
+	}
+	go.push("https://" + loadUrl + ".kariah.me")
+}
+
+
+
+
 	
 	return (
 <>
@@ -140,36 +161,74 @@ function convertDuration(input : number) {
 				leaveTo="opacity-0"
 			>
 
-		<RadioGroup value={selectedKariah} onChange={setSelectedKariah}>
 			<div className="flex flex-col gap-2.5">
-
 		{listResult.map((item, index) => (
-
-		<RadioGroup.Option key={index} value={item.subdomain} disabled={true}>
-		  {({ checked }) => (
-				<div className={checked ? checkedClass : uncheckedClass} style={{display:"flex", flexDirection:"column"}}>
-					<div className='flex flex-row justify-between items-center'>
-						<div><Text>{item.name}</Text></div>
-						<div className="flex flex-row gap-0.5 md:flex-col gap-2">
-							<div><Text style={{textAlign:'center'}}>{convertDistance(item.distance)}</Text> </div>
-							<div><Text style={{textAlign:'center'}}>{convertDuration(item.duration)}</Text></div>
-						</div>
+			<div style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
+				<div className='border border-solid border-gray-200 rounded-lg p-2' style={{display:"flex", flexDirection:"row", justifyContent:"space-between", flexGrow:1}}>
+					
+					<div style={{display:"flex", flexDirection:"column", justifyContent:"center", gap:10}}>
+					<div style={{fontWeight:"bold"}} className="flex max-w-full flex-wrap">
+						<Text>{item.name}</Text>
 					</div>
 
+					<div id="badge" className="flex flex-row gap-1 text-xs max-w-full flex-wrap">
+						{ (index === 0) ?  (<Badge size="xs" icon={MapPin}>Nearest</Badge>) : null }	
+						<Badge color="teal" size="xs" icon={MapPin}>{convertDistance(item.distance)}</Badge>
+						<Badge color="teal" size="xs" icon={Car}>{convertDuration(item.duration)}</Badge>
+					</div>
+					</div>
+
+					<div id="actionButton" style={{display:"flex", flexDirection:"column", justifyContent:"flex-end", alignItems:"stretch"}}>
+					<div id="action1">
+						<Button variant="light" className=' min-w-full border border-solid border-gray-200 rounded-lg p-1 hover:border-blue-800' 
+						onClick={() => !(index == 0) ? handleOutro(item.subdomain) : console.log("Load")}>
+						<Text>{ !(index == 0) ? "Details" : "Register" }</Text>
+						</Button>
+					</div>
+					<div id="action2">
+						<Button variant="light" className='min-w-full border border-solid border-gray-200 rounded-lg p-1 hover:border-blue-800' 
+						onClick={() => go.push("https://" + item.subdomain + ".kariah.me")}>
+							<Text>Navigate</Text>
+						</Button>
+					</div>
+					
 				</div>
+
+
+				</div>
+
 				
-		  )}
-		</RadioGroup.Option>))}
+			
+			
+			
+			
+			</div>		
+
+
+
+		
+		
+		
+		))}
 		
 		
 		</div>
-	  </RadioGroup>
+		<Dialog open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>
+		<DialogPanel>
+		<Title className="mb-3">Test : {selectedKariah.name}</Title>
+		This is a placeholder.
+		<div className="mt-3">
+			<Button variant="light" onClick={() => setIsOpen(false)}>
+			Close
+			</Button>
+		</div>
+		</DialogPanel>
+		</Dialog>
+	 
+	  
 	  </Transition>
 	  </>
 	);
 }
 
 export default GetKariahGo
-
-const uncheckedClass = 'border border-solid border-gray-200 rounded-lg p-2 hover:bg-gray-700 hover:text-white'
-const checkedClass = 'border border-solid border-gray-200 rounded-xl p-2 bg-gray-700 text-white'

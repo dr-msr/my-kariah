@@ -50,7 +50,7 @@ export default function GoPage() {
 		{ !gpsEnabled ? (
 			<div className="flex h-screen flex-col items-center justify-center gap-5">
 				<Text>Tidak dapat mengenalpasti maklumat lokasi anda.</Text>
-				<div className="w-full max-w-xl"><NavSearch /></div>
+				<div className="w-full max-w-xl m-2"><NavSearch /></div>
 			</div>
 		) : null }
 		<Transition 
