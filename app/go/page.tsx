@@ -58,7 +58,7 @@ export default function GoPage() {
 			width={100} 
 		  />
 		  <div id="container" className="flex flex-col gap-2.5 md:flex-row w-3/4 max-w-screen-md gap-2.5">
-			<Card id="waktuSolat" className="max-w-sm mx-auto bg-gray w-full shrink-0 md:max-w-fit">
+			<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 md:max-w-fit">
 			  { loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
 			</Card>
 			<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs md:max-w-full grow">

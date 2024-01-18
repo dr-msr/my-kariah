@@ -217,7 +217,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 				leaveTo="opacity-0"
 			>
 
-				<Card className="max-w-xs mx-auto" style={{padding:10}} decoration="top" decorationColor={statusCountdown}>
+				<Card className="w-full mx-auto" style={{padding:10}} decoration="top" decorationColor={statusCountdown}>
 					<div style={{display:'flex', flexDirection:'column', gap:5, justifyContent:'space-between', alignItems:'center'}}>
 							<Text>Upcoming : {nextPrayer.prayer} - {nextPrayer.time} </Text>
 							<Metric>{timerCountdown}</Metric>
@@ -225,7 +225,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					</div>
 				</Card>
 
-				<List style={{paddingLeft:10, paddingRight:10}}>
+				<List style={{ width:'100%', paddingLeft:10, paddingRight:10}}>
 					<ListItem><span>Fajr</span><span>{getWaktuSolat('fajr',0)}</span></ListItem>
 					<ListItem><span>Dhuhr</span><span>{getWaktuSolat('dhuhr',0)}</span></ListItem>
 					<ListItem><span>Asar</span><span>{getWaktuSolat('asr',0)}</span></ListItem>
