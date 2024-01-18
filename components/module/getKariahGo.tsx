@@ -1,8 +1,10 @@
-import { getSiteFromPlaceID } from "@/lib/actions";
+import { getDistance, getSiteFromPlaceID, getSitesSortedByDistance } from "@/lib/actions";
 import getCors from "@/lib/cors";
 import { Card, Text } from "@tremor/react";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { RadioGroup } from '@headlessui/react'
+import Lottie from "react-lottie";
+import drivingAnim from '../../public/assets/anims/driving.json';
 
 
 interface GetKariahGoProps {
@@ -11,16 +13,11 @@ interface GetKariahGoProps {
 }
 
 const getNearestMosque = async (lat : number, lng : number) => {
-	const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + lng + '&type=mosque&key=' + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY + '&keyword=masjid&rankby=distance'
+	const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + lat + ',' + lng + '&key=' + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY + '&keyword=masjid&rankby=distance&language=ms'
 	const response = await fetch(getCors(url));
 	return (response.json())
 }
 
-const getDistance = async (lat : number, lng : number, place_id : string) => {
-	const url = 'https://maps.googleapis.com/maps/api/directions/json?destination=' + place_id + '&origin=' + lat + ',' + lng + '&key=' + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY
-	const response = await fetch(getCors(url));
-	return (response.json())
-}
 
 
 type listplace = {
@@ -28,6 +25,8 @@ type listplace = {
 	subdomain : string | null;
 	lat : number | null,
 	lng : number | null,
+	distance : number,
+	duration : number,
 }
 
 
@@ -38,11 +37,14 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 			subdomain : null,
 			lat : 0,
 			lng : 0,
+			distance : 0,
+			duration : 0,
 		}
 	])
 	const [nearest, setNearest] = useState<any>(null)
 	const [exist, setExist] = useState<any>(null)
 	const [selectedKariah, setSelectedKariah] = useState<listplace>()
+	const [distance, setDistance] = useState<Array<any>>([]);
 
 	// const response = useQuery({
 	// 	queryKey : [input], 
@@ -63,28 +65,61 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 
 	useEffect(() => {
 		getNearestMosque(input.lat, input.lng)
-		.then((response) => {
-			setNearest(response.results[0])
-		})
-		.catch((error) => {
-			console.log(error)
+		  .then((response) => {
+			setNearest(response.results[0]);
+		  })
+		  .catch((error) => {
+			console.log(error);
+		  });
+	  
+		getSitesSortedByDistance(input.lat, input.lng)
+		  .then((sites) => {
+			const filteredSites = sites.filter(site => site !== null);
+			filteredSites.sort((a, b) => a.distance - b.distance);
+	  
+			const results = filteredSites.slice(0, 4).map(site => ({
+			  name: site.name,
+			  subdomain: site.subdomain,
+			  lat: site.gpsLat,
+			  lng: site.gpsLng,
+			  distance : site.distance,
+			  duration : site.duration
+			}));
+	  
+			setListResult(results);
+		  })
+		  .catch((error) => {
+			console.log(error);
+		  });
+	  }, [input]);
+
+	  async function updateListResult() {
+		const lokasi = await getDistance(input.lat, input.lng, nearest.geometry.location.lat, nearest.geometry.location.lng);
+		console.log(lokasi)	
+		console.log(nearest)
+		
+		if (lokasi && lokasi.routes && lokasi.routes[0] && lokasi.routes[0].legs) {
+		  setListResult(prevState => [{
+			name: nearest.name,
+			subdomain: null,
+			lat: nearest.gpsLat,
+			lng: nearest.gpsLng,
+			distance : lokasi.routes[0].legs[0].distance.value,
+			duration : lokasi.routes[0].legs[0].duration.value,
+		  }, ...prevState]);
 		}
-	)},[input])
+	  }
+	  
+	  
 
 	useEffect(() => {
 		console.log(nearest)
 		if (nearest != undefined) {
 			getSiteFromPlaceID(nearest.place_id, nearest.name, nearest.geometry.location.lat, nearest.geometry.location.lng)
-				.then((response_db) => {
+				.then(async (response_db) => {
 					console.log(response_db);
 					if (response_db != undefined) {
-						setListResult([{
-							name : response_db.name,
-							subdomain : response_db? response_db.subdomain : null,
-							lat : response_db.gpsLat,
-							lng : response_db.gpsLng,
-						}])
-
+						updateListResult();
 					}
 				
 		})
@@ -93,6 +128,8 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 		})
 		}
 	}, [nearest])
+
+
 
 	
 	// useEffect(() => {
@@ -127,26 +164,42 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 	// 		queryFn : ({ queryKey }) => getDistance(input.lat, input.lng, queryKey.place_id),
 	// 	});
 		
+function convertDistance(input : number) {
+	if (input < 1000) {
+		return input + " m"
+	} else {
+		return (input/1000).toFixed(1) + " km"
+	}
+}
 
+function convertDuration(input : number) {
+
+		return (input/60).toFixed(1) + " min"
+}
 	
 	return (
 		<RadioGroup value={selectedKariah} onChange={setSelectedKariah}>
 			<div className="flex flex-col gap-2.5">
-		<RadioGroup.Option value="startup">
+
+		{listResult.map((item, index) => (
+
+		<RadioGroup.Option value="startup" disabled={true}>
 		  {({ checked }) => (
-			<div className={checked ? checkedClass : uncheckedClass}>Startup</div>
+				<div className={checked ? checkedClass : uncheckedClass} style={{display:"flex", flexDirection:"column"}}>
+					<div className='flex flex-row justify-between items-center'>
+						<div>{item.name}</div>
+						<div style={{display:"flex", flexDirection:"column"}}>
+							<div>{convertDistance(item.distance)} </div>
+							<div>{convertDuration(item.duration)}</div>
+						</div>
+					</div>
+
+				</div>
+				
 		  )}
-		</RadioGroup.Option>
-		<RadioGroup.Option value="business">
-		  {({ checked }) => (
-			<div className={checked ? checkedClass : uncheckedClass}>Business</div>
-		  )}
-		</RadioGroup.Option>
-		<RadioGroup.Option value="enterprise">
-		  {({ checked }) => (
-			<div className={checked ?checkedClass : uncheckedClass}>Enterprise</div>
-		  )}
-		</RadioGroup.Option>
+		</RadioGroup.Option>))}
+		
+		
 		</div>
 	  </RadioGroup>
 	);
@@ -154,5 +207,5 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 
 export default GetKariahGo
 
-const uncheckedClass = 'border border-solid border-gray-200 rounded-xl p-2 hover:bg-gray-700 hover:text-white'
+const uncheckedClass = 'border border-solid border-gray-200 rounded-lg p-2 hover:bg-gray-700 hover:text-white'
 const checkedClass = 'border border-solid border-gray-200 rounded-xl p-2 bg-gray-700 text-white'

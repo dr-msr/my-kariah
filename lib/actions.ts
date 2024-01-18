@@ -16,6 +16,7 @@ import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { Post, Site } from "@prisma/client";
 import getGPS from "./maps";
+import getCors from "./cors";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -496,3 +497,47 @@ export const editUser = async (
     }
   }
 };
+
+
+export const getDistance = async (destLat : number | null, destLng : number | null, lat : number | null, lng : number | null) => {
+	const url2 = 'https://maps.googleapis.com/maps/api/directions/json?destination=' + destLat + ',' + destLng + '&origin=' + lat + ',' + lng + '&key=' + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY
+	// const response = await fetch(getCors(url2))
+	const response = await fetch(getCors(url2))
+	return (response.json())
+}
+
+
+export async function getSitesSortedByDistance(lat: number, lon: number) {
+
+	const sites = await prisma.site.findMany({
+	  select: {
+		id: true,
+		name: true,
+		subdomain: true,
+		gpsLat: true,
+		gpsLng: true,
+	  },
+	});
+
+	const promises = sites.map(async (item) => {
+		const response = await getDistance(lat, lon, item.gpsLat ? item.gpsLat : 0, item.gpsLng ? item.gpsLng : 0);
+		
+		if (response && response.routes && response.routes[0] && response.routes[0].legs) {
+			return {
+			  name : item.name,
+			  subdomain : item.subdomain,
+			  lat : item.gpsLat,
+			  lng : item.gpsLng,
+			  distance: response.routes[0].legs[0].distance.value,
+			  duration: response.routes[0].legs[0].duration.value
+			};
+		  } else {
+			console.log('Error: Invalid response', response);
+			return null;
+		  }
+	  });
+	
+	  const output = await Promise.all(promises);
+	  return output.filter(item => item !== null);
+
+  }

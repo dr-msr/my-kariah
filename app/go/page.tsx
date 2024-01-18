@@ -43,7 +43,7 @@ export default function GoPage() {
 
 
 	return (
-		<div className="flex h-screen flex-col items-center justify-center max-w-5xl align-center">
+		<div className="flex h-screen flex-col items-center justify-center">
 		  <Lottie
 			style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
 			options = {{
@@ -57,7 +57,7 @@ export default function GoPage() {
 			height={100}
 			width={100} 
 		  />
-		  <div id="container" className="flex flex-col gap-2.5 md:flex-row w-3/4 gap-2.5">
+		  <div id="container" className="flex flex-col gap-2.5 md:flex-row w-3/4 max-w-screen-md gap-2.5">
 			<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 md:max-w-fit">
 			  { loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
 			</Card>
