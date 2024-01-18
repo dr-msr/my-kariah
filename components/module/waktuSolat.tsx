@@ -4,6 +4,8 @@ import getCors from "@/lib/cors";
 import { Card, List, ListItem, Metric, Subtitle, Text } from "@tremor/react";
 import { CSSProperties, useEffect, useState } from "react";
 import { Transition } from '@headlessui/react'
+import  getDaerahByJakimCode from "@/lib/waktuSolat";
+import { OverlayArrow, Tooltip, TooltipTrigger, Button } from "react-aria-components";
 
 interface WaktuSolatProps {
 	gpsLat : number | null,
@@ -20,6 +22,8 @@ interface WaktuSolatIF {
 	maghrib: number;
 	isha: number;
   }
+
+
 
 const WaktuSolat = (input :  WaktuSolatProps) => {
 	const [waktuSolat, setWaktuSolat] = useState<WaktuSolatIF[]>([]);
@@ -229,7 +233,19 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					<ListItem><span>Isha</span><span>{getWaktuSolat('isha',0)}</span></ListItem>
 				</List>
 		
-				<div style={{fontSize:12, textAlign:"center"}}><Subtitle>ZON {zonSolat}</Subtitle></div>
+				<div style={{fontSize:12, textAlign:"center"}}>
+					<TooltipTrigger>
+						<Button>ZON {zonSolat}</Button>
+						<Tooltip>
+							<OverlayArrow style={{backgroundColor:'#f3f4f6'}}>
+							<svg width={8} height={8} viewBox="0 0 8 8">
+								<path d="M0 0 L4 4 L8 0" />
+							</svg>
+							</OverlayArrow>
+							<Text style={{fontSize:10}}>{getDaerahByJakimCode(zonSolat)}</Text>
+  						</Tooltip>
+					</TooltipTrigger>
+				</div>
 				<Text>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
 				</Transition>
 
