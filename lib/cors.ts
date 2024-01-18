@@ -1,4 +1,4 @@
 export default function getCors(url: string): string {
-	const corsUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-	return corsUrl;
-  }
+	const corsUrl = process.env.CORS_PROXY + encodeURIComponent(url);
+return corsUrl;
+}
