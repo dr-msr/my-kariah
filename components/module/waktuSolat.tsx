@@ -1,8 +1,9 @@
 "use client";
 
 import getCors from "@/lib/cors";
-import { Card, List, ListItem, Metric, Text } from "@tremor/react";
-import { useEffect, useState } from "react";
+import { Card, List, ListItem, Metric, Subtitle, Text } from "@tremor/react";
+import { CSSProperties, useEffect, useState } from "react";
+import { Transition } from '@headlessui/react'
 
 interface WaktuSolatProps {
 	gpsLat : number | null,
@@ -30,6 +31,9 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	})
 	const [statusCountdown, setStatusCountdown] = useState('');
 	const [loaded, setIsLoaded] = useState(false);
+	const [loadCountdown, setLoadingCountdown] = useState(false);
+	const [animateOpacity, setAnimateOpacity ] = useState(0);
+	const [zonSolat, setZonSolate] = useState('')
 
 	function getTimerCountdown( current : number, upcoming : number){
 		const date1 = new Date(current * 1000);
@@ -85,7 +89,10 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 				setNextPrayer({ prayer : "Fajr", time : convertTime(waktuSolat[today].fajr)})
 				getTimerCountdown(comparedTime, waktuSolat[today].fajr )
 			}
-		}		
+		}	
+		if ((nextPrayer.prayer != "") && (loadCountdown == false)) {
+			setLoadingCountdown(true)
+		}	
 	}
 
 	function formatHijri(input : string) {
@@ -169,32 +176,51 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 			}
 			const waktuSolatResult = await waktuSolatResponse.json();
 			setWaktuSolat(waktuSolatResult.prayers);
+			setZonSolate(zoneResult.zone);
 			setIsLoaded(true);
 
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}};
 		fetchData();
+		setAnimateOpacity(1);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 
-
-	if (loaded === false) {
-		return (<div><Text>Loading..</Text></div>)
-	} else {
+	// if (loadCountdown === false) {
+	// 	return (
+		
+	// 		<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
+	// 			<p className="w-48 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+	// 			<p className="w-48 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+	// 			<p className="w-48 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+	// 		</div>
+		
+	// 	)
+	// } else {
 		return (
 
 			<div style={{display:"flex", flexDirection:"column", gap:10, justifyContent:'center', alignItems:'center'}}>
 	
+			<Transition 
+				show={loadCountdown}
+				enter="transition-opacity duration-1000"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="transition-opacity duration-1000"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
+			>
+
 				<Card className="max-w-xs mx-auto" style={{padding:10}} decoration="top" decorationColor={statusCountdown}>
 					<div style={{display:'flex', flexDirection:'column', gap:5, justifyContent:'space-between', alignItems:'center'}}>
-						<Text>Upcoming : {nextPrayer.prayer} - {nextPrayer.time} </Text>
-						<Metric>{timerCountdown}</Metric>
-						<Text>Now : { currentTime ? currentTime.toLocaleTimeString() : 'Loading..'} </Text>
+							<Text>Upcoming : {nextPrayer.prayer} - {nextPrayer.time} </Text>
+							<Metric>{timerCountdown}</Metric>
+							<Text>Now : { currentTime ? currentTime.toLocaleTimeString() : 'Loading..'} </Text>
 					</div>
-				  </Card>
-	
+				</Card>
+
 				<List style={{paddingLeft:10, paddingRight:10}}>
 					<ListItem><span>Fajr</span><span>{getWaktuSolat('fajr',0)}</span></ListItem>
 					<ListItem><span>Dhuhr</span><span>{getWaktuSolat('dhuhr',0)}</span></ListItem>
@@ -203,10 +229,13 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					<ListItem><span>Isha</span><span>{getWaktuSolat('isha',0)}</span></ListItem>
 				</List>
 		
-				<Text style={{fontSize:12, alignSelf:'center'}}>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
+				<div style={{fontSize:12, textAlign:"center"}}><Subtitle>ZON {zonSolat}</Subtitle></div>
+				<Text>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
+				</Transition>
+
 			</div>
 		)
 	}
-}
+//}
 
 export default WaktuSolat
