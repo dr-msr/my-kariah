@@ -528,12 +528,19 @@ export async function getSitesSortedByDistance(lat: number, lon: number) {
 			  subdomain : item.subdomain,
 			  lat : item.gpsLat,
 			  lng : item.gpsLng,
-			  distance: response.routes[0].legs[0].distance.value,
-			  duration: response.routes[0].legs[0].duration.value
+			  distance: response.routes[0].legs[0].distance.value as number,
+			  duration: response.routes[0].legs[0].duration.value as number
 			};
 		  } else {
 			console.log('Error: Invalid response', response);
-			return "";
+			return  {
+				name : item.name,
+				subdomain : item.subdomain,
+				lat : item.gpsLat,
+				lng : item.gpsLng,
+				distance: response.routes[0].legs[0].distance.value as number,
+				duration: response.routes[0].legs[0].duration.value as number,
+			  };
 		  }
 	  });
 	
