@@ -147,11 +147,11 @@ function convertDuration(input : number) {
 
 		{listResult.map((item, index) => (
 
-		<RadioGroup.Option value="startup" disabled={true}>
+		<RadioGroup.Option key={index} value={item.subdomain} disabled={true}>
 		  {({ checked }) => (
 				<div className={checked ? checkedClass : uncheckedClass} style={{display:"flex", flexDirection:"column"}}>
 					<div className='flex flex-row justify-between items-center'>
-						<div>{item.name}</div>
+						<div >{item.name}</div>
 						<div style={{display:"flex", flexDirection:"column"}}>
 							<div>{convertDistance(item.distance)} </div>
 							<div>{convertDuration(item.duration)}</div>
