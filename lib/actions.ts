@@ -509,6 +509,10 @@ export const getDistance = async (destLat : number | null, destLng : number | nu
 
 export async function getSitesSortedByDistance(lat: number, lon: number) {
 
+	if (lat == 0 || lon == 0) {
+		return [];
+	}
+
 	const sites = await prisma.site.findMany({
 	  select: {
 		id: true,
@@ -516,6 +520,7 @@ export async function getSitesSortedByDistance(lat: number, lon: number) {
 		subdomain: true,
 		gpsLat: true,
 		gpsLng: true,
+		placeID: true
 	  },
 	});
 
@@ -528,6 +533,7 @@ export async function getSitesSortedByDistance(lat: number, lon: number) {
 			  subdomain : item.subdomain,
 			  lat : item.gpsLat,
 			  lng : item.gpsLng,
+			  placeID : item.placeID,
 			  distance: response.routes[0].legs[0].distance.value as number,
 			  duration: response.routes[0].legs[0].duration.value as number
 			};
@@ -538,6 +544,7 @@ export async function getSitesSortedByDistance(lat: number, lon: number) {
 				subdomain : item.subdomain,
 				lat : item.gpsLat,
 				lng : item.gpsLng,
+				placeID : item.placeID,
 				distance: response.routes[0].legs[0].distance.value as number,
 				duration: response.routes[0].legs[0].duration.value as number,
 			  };

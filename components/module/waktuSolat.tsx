@@ -242,7 +242,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 				</List>
 		
 
-				<Text>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
+				<Text style={{textAlign:"center"}}>{currentTime?.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})} | {formatHijri(getWaktuSolat('hijri',0))}</Text>
 				<div style={{fontSize:12, textAlign:"center"}}>
 					<TooltipTrigger>
 						<Button>Zon {zonSolat} : {getDaerahByJakimCode(zonSolat)} </Button>

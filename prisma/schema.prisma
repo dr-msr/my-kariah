@@ -121,7 +121,7 @@ model Site {
   name          String
   description   String?  @db.Text
   address       String?  @db.Text
-  placeID       String?  @unique
+  placeID       String  @unique
   postcode		String?
   gpsLat        Float
   gpsLng        Float

@@ -6,6 +6,7 @@ import { Card, Text, Badge, Title, Dialog, DialogPanel, Button } from "@tremor/r
 import { MapPin, Car, CarTaxiFront, Router } from "lucide-react";
 import { FaMosque } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 
@@ -25,6 +26,7 @@ type listplace = {
 	subdomain : string | null;
 	lat : number,
 	lng : number,
+	placeID : string,
 	distance : number,
 	duration : number,
 }
@@ -38,6 +40,7 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 			subdomain : null,
 			lat : 0,
 			lng : 0,
+			placeID : "",
 			distance : 0,
 			duration : 0,
 		}
@@ -67,6 +70,7 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 			  subdomain: site.subdomain,
 			  lat: site.lat,
 			  lng: site.lng,
+			  placeID: site.placeID,
 			  distance : site.distance,
 			  duration : site.duration
 			}));
@@ -86,6 +90,7 @@ async function updateListResult() {
 			subdomain: null,
 			lat: nearest.gpsLat,
 			lng: nearest.gpsLng,
+			placeID: nearest.place_id,
 			distance : lokasi.routes[0].legs[0].distance.value,
 			duration : lokasi.routes[0].legs[0].duration.value,
 		  }, ...prevState]);
@@ -138,6 +143,10 @@ const handleOutro = (url : string | null) => {
 	go.push("https://" + loadUrl + ".kariah.me")
 }
 
+function constructURL(placeid : string, originLat : number, originLng : number, name : string) {
+	const url = "https://www.google.com/maps/dir/?api=1&origin=" + originLat + "," + originLng + "&destination=" + name + "&destination_place_id=" + placeid + "&travelmode=driving"
+	return (encodeURI(url))
+}
 
 
 
@@ -186,10 +195,11 @@ const handleOutro = (url : string | null) => {
 						</Button>
 					</div>
 					<div id="action2">
-						<Button variant="light" className='min-w-full border border-solid border-gray-200 rounded-lg p-1 hover:border-blue-800' 
-						onClick={() => go.push("https://" + item.subdomain + ".kariah.me")}>
-							<Text>Navigate</Text>
-						</Button>
+						<a href={constructURL(item.placeID, input.lat, input.lng, item.name)} target="_blank">
+							<Button variant="light" className='min-w-full border border-solid border-gray-200 rounded-lg p-1 hover:border-blue-800'>
+								<Text>Navigate</Text>
+							</Button>
+						</a>
 					</div>
 					
 				</div>

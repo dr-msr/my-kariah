@@ -63,7 +63,7 @@ export default function GoPage() {
 				leaveTo="opacity-0"
 			>
 
-		<div className="flex h-screen flex-col items-center justify-center">
+		<div className="flex mt-3 flex-col items-center justify-center">
 		  <Lottie
 			style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
 			options = {{
