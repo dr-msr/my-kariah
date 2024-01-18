@@ -6,10 +6,12 @@ import Lottie from 'react-lottie';
 import loadingAnim from '../../public/assets/anims/locateGPS.json';
 import WaktuSolat from "@/components/module/waktuSolat";
 import GetKariahGo from "@/components/module/getKariahGo";
-
-
+import { Metadata } from "next";
+import { Transition } from '@headlessui/react'
+import NavSearch from "@/components/nav-search";
 
 export default function GoPage() {
+	const [gpsEnabled, setGPSEnabled] = useState(true);
 	const [fadeOut, setFadeOut] = React.useState({
 		opacity: 1,
 		height : 100,
@@ -35,14 +37,32 @@ export default function GoPage() {
 
 	function errorGPS(err: { code: any; message: any; }) {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
+		setGPSEnabled(false)
 	}
 
 	useEffect(() => {
-		const gps = navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);		
+		navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);		
 	},[])
 
 
 	return (
+	<>	
+		{ !gpsEnabled ? (
+			<div className="flex h-screen flex-col items-center justify-center gap-5">
+				<Text>Tidak dapat mengenalpasti maklumat lokasi anda.</Text>
+				<div className="w-full max-w-xl"><NavSearch /></div>
+			</div>
+		) : null }
+		<Transition 
+				show={gpsEnabled}
+				enter="transition-opacity duration-1000"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="transition-opacity duration-1000"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
+			>
+
 		<div className="flex h-screen flex-col items-center justify-center">
 		  <Lottie
 			style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
@@ -63,9 +83,10 @@ export default function GoPage() {
 			</Card>
 			<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs md:max-w-full grow">
 				<GetKariahGo lat={gps.lat} lng={gps.long} />
-
 			</Card>
 		  </div>
 		</div>
+		</Transition>
+		</>
 	  );
 }

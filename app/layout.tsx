@@ -10,7 +10,6 @@ const title =
   "Kariah.me : Laman Sehenti Untuk Kegunaan Ahli Kariah Kawasan Anda";
 const description =
   "Dapatkan Maklumat Setempat Seperti Waktu Solat, Aktiviti Masjid & Surau, Urusan & Temujanji";
-const image = "https://vercel.pub/thumbnail.png";
 
 export const metadata: Metadata = {
   title,
@@ -19,16 +18,13 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    images: [image],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title,
     description,
-    images: [image],
-    creator: "@vercel",
+    creator: "@drmsr_dev",
   },
-  metadataBase: new URL("https://vercel.pub"),
 };
 
 export default function RootLayout({
