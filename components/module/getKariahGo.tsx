@@ -77,8 +77,8 @@ const GetKariahGo = ( input : GetKariahGoProps) => {
 			const results = filteredSites.slice(0, 4).map(site => ({
 			  name: site.name,
 			  subdomain: site.subdomain,
-			  lat: site.gpsLat,
-			  lng: site.gpsLng,
+			  lat: site.lat,
+			  lng: site.lng,
 			  distance : site.distance,
 			  duration : site.duration
 			}));

@@ -533,7 +533,7 @@ export async function getSitesSortedByDistance(lat: number, lon: number) {
 			};
 		  } else {
 			console.log('Error: Invalid response', response);
-			return null;
+			return "";
 		  }
 	  });
 	

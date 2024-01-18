@@ -118,18 +118,18 @@ model Event {
 
 model Site {
   id            String   @id @default(cuid())
-  name          String?
+  name          String
   description   String?  @db.Text
   address       String?  @db.Text
   placeID       String?  @unique
   postcode		String?
-  gpsLat        Float?
-  gpsLng        Float?
+  gpsLat        Float
+  gpsLng        Float
   logo          String?
   font          String   @default("font-cal")
   image         String?
   imageBlurhash String?
-  subdomain     String?  @unique
+  subdomain     String  @unique
   customDomain  String?  @unique
   message404    String?
   createdAt     DateTime @default(now())
