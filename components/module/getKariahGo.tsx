@@ -2,6 +2,8 @@ import { getDistance, getSiteFromPlaceID, getSitesSortedByDistance } from "@/lib
 import getCors from "@/lib/cors";
 import { SetStateAction, useEffect, useState } from "react";
 import { RadioGroup } from '@headlessui/react'
+import { Card, Text } from "@tremor/react";
+
 
 
 interface GetKariahGoProps {
@@ -151,10 +153,10 @@ function convertDuration(input : number) {
 		  {({ checked }) => (
 				<div className={checked ? checkedClass : uncheckedClass} style={{display:"flex", flexDirection:"column"}}>
 					<div className='flex flex-row justify-between items-center'>
-						<div >{item.name}</div>
-						<div style={{display:"flex", flexDirection:"column"}}>
-							<div>{convertDistance(item.distance)} </div>
-							<div>{convertDuration(item.duration)}</div>
+						<div><Text>{item.name}</Text></div>
+						<div className="flex flex-row gap-0.5 md:flex-col gap-2">
+							<div><Text style={{textAlign:'center'}}>{convertDistance(item.distance)}</Text> </div>
+							<div><Text style={{textAlign:'center'}}>{convertDuration(item.duration)}</Text></div>
 						</div>
 					</div>
 
