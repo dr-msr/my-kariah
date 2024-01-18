@@ -10,7 +10,6 @@ import { useModal } from "./provider";
 import va from "@vercel/analytics";
 import { useEffect, useState } from "react";
 import { SearchSelect, SearchSelectItem } from "@tremor/react";
-import { ZonSolat } from "@/lib/waktuSolat";
 import GooglePlacesAutocomplete, { getLatLng, geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { Option } from "react-google-places-autocomplete/build/types";
 import { SingleValue } from "react-select";
