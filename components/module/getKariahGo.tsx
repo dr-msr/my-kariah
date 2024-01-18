@@ -194,7 +194,6 @@ const handleOutro = (url : string | null) => {
 					
 				</div>
 
-
 				</div>
 
 				
