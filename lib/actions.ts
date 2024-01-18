@@ -23,7 +23,6 @@ const nanoid = customAlphabet(
   7,
 ); // 7-character random string
 
-
 export const createSite = async (formData: FormData) => {
   const session = await getSession();
   if (!session?.user.id) {
@@ -38,10 +37,6 @@ export const createSite = async (formData: FormData) => {
   const gpsLat = parseFloat(formData.get("gpsLat") as string);
   const gpsLng = parseFloat(formData.get("gpsLng") as string);
   const postcode = formData.get("postcode") as string;
-
-//   const gpsLat = await getGPS(formData.get("placeID") as string, "lat");
-//   const gpsLng = await getGPS(formData.get("placeID") as string, "lng");
-
 
   try {
     const response = await prisma.site.create({
@@ -238,8 +233,6 @@ export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
   }
 });
 
-
-
 export const getSiteFromPlaceID = async (search : string, in_name : string, in_lat : number, in_lng : number) => {
 	try {
 	const site =  await prisma.site.findUnique({
@@ -282,17 +275,6 @@ export const getSiteFromPostId = async (postId: string) => {
   });
   return post?.siteId;
 };
-
-
-// export const getNearestKariah = async ( lat : number, lng : number) => {
-// 	const sites = await prisma.site.findMany();
-// 	const sitesWithDistance = sites.map(site => ({
-// 		...site,
-// 		distance: calculateDistance(lat, lng, site.gpsLat, site.gpsLng),
-// 	}));
-// 	const sortedSites = sitesWithDistance.sort((a, b) => a.distance - b.distance);
-// 	return sortedSites.slice(0, 5);
-// }
 
 export const getAllKariah = async () => {
 	const sites = await prisma.site.findMany();

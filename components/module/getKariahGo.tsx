@@ -30,7 +30,6 @@ const getNearestMosque = async (lat : number, lng : number) => {
 const GetKariahGo = (input : GetKariahGoProps) => {
 	const go = useRouter();
 	const [loaded, setLoaded] = useState(false);
-	const [isOpen, setIsOpen] = useState(false);
 	const [listResult, setListResult] = useState<listplace[]>([
 		{
 			name : "",
@@ -42,7 +41,6 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 			duration : 0,
 		}])
 	const [nearest, setNearest] = useState<any>(null)
-	const [selectedKariah, setSelectedKariah] = useState<listplace>(listResult[0])
 
 	const handleOutro = (url : string | null) => {
 		var loadUrl = ""
