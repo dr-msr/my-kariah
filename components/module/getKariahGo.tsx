@@ -129,7 +129,7 @@ function convertDistance(input : number) {
 
 function convertDuration(input : number) {
 
-		return (input/60).toFixed(1) + " min"
+		return "~" + Math.floor(input/60) + " min"
 }
 
 

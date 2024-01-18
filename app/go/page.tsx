@@ -4,6 +4,7 @@ import { Card, Text } from "@tremor/react";
 import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import loadingAnim from '../../public/assets/anims/locateGPS.json';
+import searchingAnim from '../../public/assets/anims/searching.json';
 import WaktuSolat from "@/components/module/waktuSolat";
 import GetKariahGo from "@/components/module/getKariahGo";
 import { Metadata } from "next";
@@ -48,9 +49,33 @@ export default function GoPage() {
 	return (
 	<>	
 		{ !gpsEnabled ? (
-			<div className="flex h-screen flex-col items-center justify-center gap-5">
+					
+			<div className="flex mt-5 flex-col items-center justify-center gap-5">
+				<Transition 
+					show={!gpsEnabled}
+					enter="transition-opacity duration-1000"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="transition-opacity duration-1000"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				> 
+				 <Lottie
+					options = {{
+			  		loop: true,
+			  		autoplay: true,
+			  		animationData: searchingAnim,
+			  		rendererSettings: {
+					preserveAspectRatio: "xMidYMid slice"
+			 	 }
+					}}
+					height={200}
+					width='100%'
+					style={{marginBottom: '1rem'}} 
+		  />
 				<Text>Tidak dapat mengenalpasti maklumat lokasi anda.</Text>
-				<div className="w-full max-w-xl m-2"><NavSearch /></div>
+				<div className="w-full max-w-md m-2"><NavSearch /></div>
+				</Transition>
 			</div>
 		) : null }
 		<Transition 
