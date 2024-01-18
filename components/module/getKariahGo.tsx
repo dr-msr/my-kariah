@@ -72,7 +72,7 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 		if (input < 1000) {
 			return input + " m"
 		} else {
-			return (input/1000).toFixed(1) + " km"
+			return Math.floor(input/1000) + " km"
 		}
 	}
 
