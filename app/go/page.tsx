@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title,
     description,
     creator: "@drmsr_dev",
-	images: "/full-snapshot.png"
+	images: "/full-snapshot.png?updated=2021-10-20"
   },
 };
 
