@@ -20,10 +20,11 @@ export const metadata: Metadata = {
     description,
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title,
     description,
     creator: "@drmsr_dev",
+	images: "/full-snapshot.png"
   },
 };
 

@@ -9,6 +9,8 @@ import WaktuSolat from "@/components/module/waktuSolat";
 import GetKariahGo from "@/components/module/getKariahGo";
 import { Transition } from '@headlessui/react'
 import NavSearch from "@/components/nav-search";
+import HeaderGo from "@/components/headerGo";
+import FooterGo from "@/components/footerGo";
 
 export default function GoPage() {
 	const [gpsEnabled, setGPSEnabled] = useState(true);
@@ -85,8 +87,12 @@ export default function GoPage() {
 				leaveTo="opacity-0"
 			>
 
-		<div className="flex mt-3 flex-col items-center justify-center">
-		  <Lottie
+		<div className="flex mt-4 flex-col items-center justify-center gap-2.5">
+			<div className="max-w-xs mx-auto w-full md:w-3/4 max-w-screen-md">
+				<HeaderGo />
+			</div>
+			
+			<Lottie
 			style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
 			options = {{
 			  loop: true,
@@ -98,15 +104,21 @@ export default function GoPage() {
 			}}
 			height={100}
 			width={100} 
-		  />
-		  <div id="container" className="flex flex-col gap-2.5 md:flex-row w-3/4 max-w-screen-md gap-2.5">
-			<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 md:max-w-fit">
-			  { loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
-			</Card>
-			<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs md:max-w-full grow">
-				<GetKariahGo lat={gps.lat} lng={gps.long} />
-			</Card>
-		  </div>
+			/>
+
+		  	<div id="container" className="flex flex-col gap-2.5 md:flex-row w-3/4 max-w-screen-md gap-2.5">
+				<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 md:max-w-fit">
+				  	{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
+				</Card>
+			
+				<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs md:max-w-full grow">
+					<GetKariahGo lat={gps.lat} lng={gps.long} />
+				</Card>
+		  	</div>
+		  	
+			<div className="max-w-xs mx-auto w-full md:w-3/4 max-w-screen-md">
+				<FooterGo />
+			</div>
 		</div>
 		</Transition>
 		</>

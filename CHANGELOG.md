@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 <!-- - New features that have been added since the last release -->
+- Add header to Go.
+- Add footer to Go.
+- Add Twitter (X) and Facebook link to footer.
 
 ### Changed
 <!-- - Changes to existing functionality -->
