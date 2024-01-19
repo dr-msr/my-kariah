@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "./providers";
 import { Metadata } from "next";
 import { cn } from "@/lib/utils";
-import favico from "@/public/favico/favicon.ico"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const title =
   "Kariah.me : Laman Sehenti Untuk Kegunaan Ahli Kariah Kawasan Anda";
@@ -43,7 +43,8 @@ export default function RootLayout({
       <body className={cn(cal.variable, inter.variable)}>
         <Providers>
           {children}
-          <Analytics />
+          <SpeedInsights/>
+		  <Analytics />
         </Providers>
       </body>
     </html>
