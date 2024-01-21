@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Text } from "@tremor/react";
+import { Card, Text, Subtitle } from "@tremor/react";
 import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import loadingAnim from '../../public/assets/anims/locateGPS.json';
@@ -11,6 +11,7 @@ import { Transition } from '@headlessui/react'
 import NavSearch from "@/components/nav-search";
 import HeaderGo from "@/components/headerGo";
 import FooterGo from "@/components/footerGo";
+import SnippetHadis from "@/components/module/snippetHadis";
 
 
 const GoPageClient = () => {
@@ -108,9 +109,16 @@ const GoPageClient = () => {
 			/>
 
 		  	<div id="container" className="flex flex-col gap-2.5 lg:flex-row w-3/4 max-w-screen-md gap-2.5">
-				<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs">
-				  	{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
-				</Card>
+
+				<div id="left" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs flex flex-col justify-between gap-2.5">
+					<Card id="waktuSolat" className="">
+						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
+					</Card>
+
+					{/* <div id="snippet" className="lg:max-w-xs grow p-2 max-h-36">
+					<SnippetHadis />
+					</div> */}
+				</div>
 			
 				<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs lg:max-w-full grow">
 					<GetKariahGo lat={gps.lat} lng={gps.long} />
