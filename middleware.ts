@@ -58,11 +58,11 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-  if (hostname === "solat.today") {
-    return NextResponse.rewrite(
-      new URL("https://go.kariah.me"),
-    );
-  }
+//   if (hostname === "solat.today") {
+//     return NextResponse.rewrite(
+//       new URL("https://go.kariah.me"),
+//     );
+//   }
 
   // rewrite root application to `/home` folder
   if (
