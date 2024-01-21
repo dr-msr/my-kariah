@@ -58,15 +58,16 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-//   if (hostname === "solat.today") {
-//     return NextResponse.rewrite(
-//       new URL("https://go.kariah.me"),
-//     );
-//   }
+  // special case for `vercel.pub` domain
+  if (hostname === "vercel.pub") {
+    return NextResponse.redirect(
+      "https://vercel.com/blog/platforms-starter-kit",
+    );
+  }
 
-  if (hostname === "mykariah.app") {
+  if (hostname === "solat.today") {
     return NextResponse.rewrite(
-      new URL("https://kariah.me"),
+      new URL("https://go.kariah.me"),
     );
   }
 
