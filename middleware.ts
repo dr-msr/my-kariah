@@ -64,6 +64,12 @@ export default async function middleware(req: NextRequest) {
 //     );
 //   }
 
+  if (hostname === "mykariah.app") {
+    return NextResponse.rewrite(
+      new URL("https://kariah.me"),
+    );
+  }
+
   // rewrite root application to `/home` folder
   if (
     hostname === "localhost:3000" ||
