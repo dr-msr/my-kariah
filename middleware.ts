@@ -58,10 +58,9 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-  // special case for `vercel.pub` domain
-  if (hostname === "vercel.pub") {
-    return NextResponse.redirect(
-      "https://vercel.com/blog/platforms-starter-kit",
+  if (hostname === "solat.today") {
+    return NextResponse.rewrite(
+      new URL("https://go.kariah.me"),
     );
   }
 

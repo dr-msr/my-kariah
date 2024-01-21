@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - [WaktuSolat.module] [22/01] Removed Get Zone API call for WaktuSolat module, migrate to local geojson. Module should load 50% faster.
 - [WaktuSolat.module] [22/01] API WaktuSolat no longer requiring cors (thanks iqfareez)
 - [GO] [22/01] Changed min-width to XL.
+- [GO] [22/01] Redirection of https://solat.today no longer happened at the level of DNS, instead, handled by middleware for a better SEO outcome.
 
 ### Deprecated
 <!-- - Features that are planned to be removed in a future release -->
