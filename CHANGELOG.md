@@ -8,13 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 <!-- - New features that have been added since the last release -->
-- [21/01] Add header to Go.
-- [21/01] Add footer to Go.
-- [21/01] Add Twitter (X) and Facebook link to footer.
+- [GO] [21/01] Add header to Go.
+- [GO] [21/01] Add footer to Go.
+- [GO] [21/01] Add Twitter (X) and Facebook link to footer.
 
 ### Changed
 <!-- - Changes to existing functionality -->
-- [22/01] Removed Get Zone API call for WaktuSolat module, migrate to local geojson.
+- [WaktuSolat.module] [22/01] Removed Get Zone API call for WaktuSolat module, migrate to local geojson. Module should load 50% faster.
+- [WaktuSolat.module] [22/01] API WaktuSolat no longer requiring cors (thanks iqfareez)
+- [GO] [22/01] Changed min-width to XL.
 
 ### Deprecated
 <!-- - Features that are planned to be removed in a future release -->

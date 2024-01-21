@@ -107,17 +107,17 @@ const GoPageClient = () => {
 			width={100} 
 			/>
 
-		  	<div id="container" className="flex flex-col gap-2.5 md:flex-row w-3/4 max-w-screen-md gap-2.5">
-				<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 md:max-w-fit">
+		  	<div id="container" className="flex flex-col gap-2.5 lg:flex-row w-3/4 max-w-screen-md gap-2.5">
+				<Card id="waktuSolat" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs">
 				  	{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
 				</Card>
 			
-				<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs md:max-w-full grow">
+				<Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs lg:max-w-full grow">
 					<GetKariahGo lat={gps.lat} lng={gps.long} />
 				</Card>
 		  	</div>
 		  	
-			<div className="max-w-xs mx-auto w-full md:w-3/4 max-w-screen-md">
+			<div className="max-w-xs mx-auto w-full lg:w-3/4 max-w-screen-md">
 				<FooterGo />
 			</div>
 		</div>
