@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     creator: "@drmsr_dev",
 	images: "/full-snapshot.png"
   },
+  metadataBase: new URL("https://kariah.me"),
 };
 
 export default function RootLayout({

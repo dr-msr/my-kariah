@@ -8,16 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 <!-- - New features that have been added since the last release -->
-- [GO] [21/01] Add header to Go.
-- [GO] [21/01] Add footer to Go.
-- [GO] [21/01] Add Twitter (X) and Facebook link to footer.
+- [21/01] Add header to Go. [GO] 
+- [21/01] Add footer to Go. [GO] 
+- [21/01] Add Twitter (X) and Facebook link to footer. [GO] 
 
 ### Changed
 <!-- - Changes to existing functionality -->
-- [WaktuSolat.module] [22/01] Removed Get Zone API call for WaktuSolat module, migrate to local geojson. Module should load 50% faster.
-- [WaktuSolat.module] [22/01] API WaktuSolat no longer requiring cors (thanks iqfareez)
-- [GO] [22/01] Changed min-width to XL.
-- [GO] [22/01] Redirection of https://solat.today no longer happened at the level of DNS, instead, handled by middleware for a better SEO outcome.
+- [22/01] Removed Get Zone API call for WaktuSolat module, migrate to local geojson. Module should load 50% faster. [WaktuSolat.module] 
+- [22/01] API WaktuSolat no longer requiring cors (thanks iqfareez) [WaktuSolat.module] 
+- [22/01] Changed min-width to XL. [GO] 
+- [22/01] Redirection of https://solat.today no longer happened at the level of DNS, instead, handled by middleware for a better SEO outcome. [GO] 
 
 ### Deprecated
 <!-- - Features that are planned to be removed in a future release -->
@@ -27,7 +27,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 <!-- - Any bug fixes -->
-- [21/01] Fix metadata for Go
+- [21/01] Fix metadata for Go [Go]
+- [22/01] Fix metadataBase
 
 ### Security
 <!-- - Any security fixes -->
