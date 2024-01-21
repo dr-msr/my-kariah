@@ -1,11 +1,10 @@
 "use client";
 
-import getCors from "@/lib/cors";
-import getDaerahByJakimCode from "@/lib/waktuSolat";
 import { Card, List, ListItem, Metric, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { Transition } from '@headlessui/react'
 import { OverlayArrow, Tooltip, TooltipTrigger, Button } from "react-aria-components";
+import getDaerahByJakimCode, { getZoneFromGPS } from "@/lib/waktuSolat";
 
 interface WaktuSolatProps {
 	gpsLat : number | null,
@@ -160,15 +159,13 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	useEffect(() => {
 		const fetchData = async () => {
 		try {
-			const url = "https://api.waktusolat.app/zones/gps?lat=" + input.gpsLat + "&long=" + input.gpsLng
-			const zoneResponse = await fetch(getCors(url));
-
-			if (!zoneResponse.ok) {
-				throw new Error('Zone network response was not ok');
+			const zoneResult = getZoneFromGPS(input.gpsLng, input.gpsLat)
+			if (zoneResult == null) { 
+				throw new Error('Unable to get Zone information');
 			}
-			const zoneResult = await zoneResponse.json();	  
+
 			const url2 = "https://api.waktusolat.app/v2/solat/" + zoneResult.zone;
-			const waktuSolatResponse = await fetch(getCors(url2));
+			const waktuSolatResponse = await fetch(encodeURI(url2));
 	  
 			if (!waktuSolatResponse.ok) {
 			  throw new Error('Waktu Solat network response was not ok');
@@ -237,7 +234,6 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					</TooltipTrigger>
 				</div>
 				</Transition>
-
 			</div>
 		)
 	}
