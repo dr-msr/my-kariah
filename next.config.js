@@ -6,7 +6,8 @@ module.exports = {
     serverActions: {
       allowedOrigins: [
 		"app.localhost:3000",
-		"go.localhost:3000"
+		"go.localhost:3000",
+		"solat.today"
 	],
     },
   },
