@@ -60,7 +60,7 @@ export default async function middleware(req: NextRequest) {
 
   if (hostname === "solat.today") {
 //	return NextResponse.redirect("https://go.kariah.me");
-	return NextResponse.rewrite("go.kariah.me")
+	return NextResponse.rewrite(new URL(`https://go.kariah.me${path}`, req.url));
   }
 
   if (hostname === "mykariah.app") {
