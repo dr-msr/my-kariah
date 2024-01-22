@@ -1,0 +1,22 @@
+[
+	{
+		"id": 1,
+		"hadis": "Sesungguhnya amal itu dengan niat, dan sesungguhnya bagi seseorang itu apa yang dia niatkan.",
+		"rawi": "Bukhari & Muslim"
+	},
+	{
+		"id": 2,
+		"hadis": "Sesungguhnya Allah SWT tidak melihat kepada rupa kalian dan harta kalian, tetapi Allah SWT melihat kepada hati dan amal kalian.",
+		"rawi": "Muslim"
+	},
+	{
+		"id": 3,
+		"hadis" : "Barangsiapa yang keluar rumah untuk mencari ilmu, maka dia termasuk orang yang berada dijalan Allah sehinggalah dia pulang.",
+		"rawi": "Tirmizi"
+	},
+	{
+		"id": 4,
+		"hadis": "Barangsiapa yang menempuh jalan untuk mencari ilmu, maka Allah SWT akan memudahkan baginya jalan menuju surga.",
+		"rawi": "Muslim"
+	}
+]
