@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Text, Subtitle } from "@tremor/react";
+import { Card, Text } from "@tremor/react";
 import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import loadingAnim from '../../public/assets/anims/locateGPS.json';
@@ -11,7 +11,6 @@ import { Transition } from '@headlessui/react'
 import NavSearch from "@/components/nav-search";
 import HeaderGo from "@/components/headerGo";
 import FooterGo from "@/components/footerGo";
-import SnippetHadis from "@/components/module/snippetHadis";
 
 
 const GoPageClient = () => {
