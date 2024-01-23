@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - [22/01] API WaktuSolat no longer requiring cors (thanks iqfareez) [WaktuSolat.module] 
 - [22/01] Changed min-width to XL. [GO] 
 - [22/01] Redirection of https://solat.today no longer happened at the level of DNS, instead, handled by middleware for a better SEO outcome. [GO] 
+- [24/01] Changed to Route API for calculating distance. 
 
 ### Deprecated
 <!-- - Features that are planned to be removed in a future release -->
