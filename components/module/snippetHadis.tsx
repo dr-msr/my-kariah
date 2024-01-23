@@ -20,6 +20,7 @@ const SnippetHadis = () => {
 
     useEffect(() => {
         return setSelectedHadis(hadis_load);
+// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (!selectedHadis) return null;
