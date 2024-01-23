@@ -32,8 +32,6 @@ const getNearestMosque = async (lat : number, lng : number) => {
 }
 
 const GetKariahGo = (input : GetKariahGoProps) => {
-	const placeLibrary = useMapsLibrary('places')
-	const mapRef = useRef<HTMLDivElement>(null);
 	const routesLibrary = useMapsLibrary('routes');
 	const go = useRouter();
 	const [loaded, setLoaded] = useState(false);
@@ -51,13 +49,6 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 	const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
 
 
-	function printresult(input : google.maps.places.PlaceResult[] | null) {
-		if (input) {
-			console.log(input)
-		}
-	}
-
-
 	// const loadNearestMosque = async (inputLat : number, inputLng : number) => {
 		
 	// 	if (placeLibrary && mapRef.current) {
@@ -70,7 +61,6 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 	// 		}
 	// 		newSearch.nearbySearch(request, (results : google.maps.places.PlaceResult[] | null) => printresult(results))
 	// }}
-
 
 	const handleOutro = (url : string | null) => {
 		var loadUrl = ""
@@ -92,6 +82,7 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 					origin: {lat : input_lat, lng : input_lng},
 					destination: {lat : dest_lat, lng : dest_lng},
 					travelMode: google.maps.TravelMode.DRIVING,
+					
 				})
 				.then(response => {
 					return response;
@@ -169,10 +160,6 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 	  }, [routesLibrary]);
 
 
-
-
-	
-
 	useEffect(() => {
 		if (nearest != undefined) {
 			getSiteFromPlaceID(nearest.place_id, nearest.name, nearest.geometry.location.lat, nearest.geometry.location.lng)
@@ -216,36 +203,28 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 
 	return (
 	<>
-		{/* { !loaded ? (
+		{ !loaded ? (
 			<div id="skeleton" className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
 	 				<p className="w-full p-5 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
 	 				<p className="w-full p-5 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
 	 				<p className="w-full p-5 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
 	 			</div>
-		) : null } */}
+		) : null }
 
-		{/* <Transition 
+		<Transition 
 			show={loaded}
 			enter="transition-opacity duration-1000"
 			enterFrom="opacity-0"
 			enterTo="opacity-100"
 			leave="transition-opacity duration-1000"
 			leaveFrom="opacity-100"
-			leaveTo="opacity-0"> */}
+			leaveTo="opacity-0">
 
 		<div id="list result" className="flex flex-col gap-2.5">
 
 		
 		{listResult.map((item, index) => (
-
-			<Transition 
-			show= {(index <= listResult.length - 1) ? true : false}
-			enter="transition-opacity duration-1000"
-			enterFrom="opacity-0"
-			enterTo="opacity-100"
-			leave="transition-opacity duration-1000"
-			leaveFrom="opacity-100"
-			leaveTo="opacity-0">
+			
 			
 			<div key={index} style={{display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center"}}>
 				<div className='border border-solid border-gray-200 rounded-lg p-2' style={{display:"flex", flexDirection:"row", justifyContent:"space-between", flexGrow:1}}>
@@ -256,10 +235,10 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 							<Text>{item.name}</Text>
 						</div>
 
-						<div id="badge" className="flex flex-row gap-1 text-xs max-w-full flex-wrap" style={ (index === 0 && item.subdomain != null ) ? {display:"none"} : {}}>
-							{ (index === 0) ?  (<Badge size="xs" icon={MapPin}>Nearest</Badge>) : null }	
-							<Badge color="teal" size="xs" icon={MapPin}>{convertDistance(item.distance)}</Badge>
-							<Badge color="teal" size="xs" icon={Car}>{convertDuration(item.duration)}</Badge>
+						<div key={index} id="badge" className="flex flex-row gap-1 text-xs max-w-full flex-wrap" style={ (index === 0 && item.subdomain != null ) ? {display:"none"} : {}}>
+							{ (index === 0) ?  (<Badge key={index} size="xs" icon={MapPin}>Nearest</Badge>) : null }	
+							<Badge key={index} color="teal" size="xs" icon={MapPin}>{convertDistance(item.distance)}</Badge>
+							<Badge key={index} color="teal" size="xs" icon={Car}>{convertDuration(item.duration)}</Badge>
 						</div>
 
 					</div>
@@ -285,13 +264,11 @@ const GetKariahGo = (input : GetKariahGoProps) => {
 
 					</div>
 				</div>
-			</div>
-
-			</Transition>				
+			</div>				
 		))}
 			
 		</div>
-		{/* </Transition> */}
+		</Transition>
 	</>
 );}
 
