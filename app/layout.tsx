@@ -34,6 +34,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+
+	const googleMapScriptSrc = "https://maps.googleapis.com/maps/api/js?key=" + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY + "&loading=async&libraries=places&callback=initMap"
+
   return (
     <html lang="en" suppressHydrationWarning>
 		<head>
@@ -41,6 +45,8 @@ export default function RootLayout({
 			<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 			<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 			<link rel="manifest" href="/site.webmanifest" />
+			<script async src={googleMapScriptSrc}></script>
+
 		</head>
       <body className={cn(cal.variable, inter.variable)}>
         <Providers>
