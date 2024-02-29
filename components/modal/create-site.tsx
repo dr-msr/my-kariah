@@ -105,7 +105,6 @@ export default function CreateSiteModal() {
             va.track("Created Kariah");
             const { id } = res;
             router.refresh();
-            router.push(`/sites/${id}`);
             modal?.hide();
             toast.success(`Successfully created kariah!`);
 			console.log(res);
