@@ -32,7 +32,7 @@ const GoPageClient = () => {
 		country : "",
 	});
 
-	const [successLoad, setSuccess] = useState(true);
+	const [successLoad, setSuccess] = useState(false);
 
 	var options = {
 		enableHighAccuracy: false,
