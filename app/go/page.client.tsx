@@ -161,8 +161,9 @@ const GoPageClient = () => {
 
 				<div id="left" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs flex flex-col justify-between gap-2.5">
 					
+				{ notMy && (
+
 					<Card id="NotMy" decoration="top" decorationColor="red">
-						{ notMy && (
 							<div className="flex flex-col gap-2">
 							<code className="border w-full px-2 text-sm mt-2 text-gray-400">
 								GPS Latitude : {errorCountry.lat} <br />
@@ -176,8 +177,9 @@ const GoPageClient = () => {
 							</Text>
 
 							</div>
-						)}
 					</Card>
+											)}
+
 					
 					<Card id="waktuSolat" className="">
 						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
