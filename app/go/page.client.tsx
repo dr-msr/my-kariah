@@ -79,10 +79,7 @@ const GoPageClient = () => {
 
 				if (result.state === "granted") {
 					console.log("You have permission to access your location")
-					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, {
-						timeout : 4000,
-						maximumAge : 0,
-					});
+					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);
 				} else if (result.state === "denied") {
 					console.log("You have denied permission to access your location")
 					setGPSEnabled(false)
@@ -128,6 +125,7 @@ const GoPageClient = () => {
 				</Transition>
 			</div>
 		) : null }
+
 		<Transition 
 				show={gpsEnabled}
 				enter="transition-opacity duration-1000"
