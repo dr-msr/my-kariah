@@ -9,7 +9,7 @@ import getDaerahByJakimCode, { getZoneFromGPS } from "@/lib/waktuSolat";
 interface WaktuSolatProps {
 	gpsLat : number | null,
 	gpsLng : number | null,
-	success : (value: boolean) => void
+	success? : (value: boolean) => void | undefined
   }
 
 interface WaktuSolatIF {
@@ -162,7 +162,9 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 		try {
 			var zoneResult = getZoneFromGPS(input.gpsLng, input.gpsLat)
 			if (zoneResult == null) { 
-				input.success(false);
+				if(input.success) {
+					input.success(false);
+				}				
 				zoneResult = {
 					zone : "WLY01",
 					state : "",
@@ -175,19 +177,23 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 		
 	  
 			if (!waktuSolatResponse.ok) {
-				input.success(false);
-			  	throw new Error('Waktu Solat network response was not ok');
+				if(input.success) {
+					input.success(false);
+				}			  	
+				throw new Error('Waktu Solat network response was not ok');
 			}
 
 			const waktuSolatResult = await waktuSolatResponse.json();
-			console.log(waktuSolatResult)
 			setWaktuSolat(waktuSolatResult.prayers);
 			setZonSolate(zoneResult.zone);
-			input.success(true);
-
+			if(input.success) {
+				input.success(false);
+			}
 		} catch (error) {
-			input.success(false);
-			console.error('Error fetching data:', error);
+			if(input.success) {
+				input.success(false);
+			}
+						console.error('Error fetching data:', error);
 		}};
 		fetchData();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
