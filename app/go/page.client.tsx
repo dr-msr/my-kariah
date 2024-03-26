@@ -32,6 +32,12 @@ const GoPageClient = () => {
 		country : "",
 	});
 
+	var options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0,
+	  };
+
 	function loadGPS(pos: any) {
 		const CTY = lookup(pos.coords.latitude, pos.coords.longitude);
 
@@ -71,27 +77,23 @@ const GoPageClient = () => {
 	}
 
 	useEffect(() => {
-		
-		if ("permissions" in navigator) {
-			navigator.permissions.query({
-				name: "geolocation"
-			}).then((result) => {
-
-				if (result.state === "granted") {
-					console.log("You have permission to access your location")
-					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);
-				} else if (result.state === "denied") {
-					console.log("You have denied permission to access your location")
+		if (navigator.geolocation) {
+		  navigator.permissions
+			.query({ name: "geolocation" })
+			.then(function (result) {
+			  console.log(result);
+			  if (result.state === "granted") {
+					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
+			  } else if (result.state === "prompt") {
+					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
+			  } else if (result.state === "denied") {
 					setGPSEnabled(false)
-				} else {
-					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, {
-						timeout : 4000,
-						maximumAge : 0,
-					});
-				}	
-			})
+			  }
+			});
+		} else {
+		  console.log("Geolocation is not supported by this browser.");
 		}
-	},[])
+	  }, []);
 
 	return (
 	<>	
