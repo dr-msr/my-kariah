@@ -9,6 +9,7 @@ import getDaerahByJakimCode, { getZoneFromGPS } from "@/lib/waktuSolat";
 interface WaktuSolatProps {
 	gpsLat : number | null,
 	gpsLng : number | null,
+	success : (value: boolean) => void
   }
 
 interface WaktuSolatIF {
@@ -159,22 +160,33 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	useEffect(() => {
 		const fetchData = async () => {
 		try {
-			const zoneResult = getZoneFromGPS(input.gpsLng, input.gpsLat)
+			var zoneResult = getZoneFromGPS(input.gpsLng, input.gpsLat)
 			if (zoneResult == null) { 
-				throw new Error('Unable to get Zone information');
+				input.success(false);
+				zoneResult = {
+					zone : "WLY01",
+					state : "",
+					district : "",
+				};
 			}
 
 			const url2 = "https://api.waktusolat.app/v2/solat/" + zoneResult.zone;
 			const waktuSolatResponse = await fetch(encodeURI(url2));
+		
 	  
 			if (!waktuSolatResponse.ok) {
-			  throw new Error('Waktu Solat network response was not ok');
+				input.success(false);
+			  	throw new Error('Waktu Solat network response was not ok');
 			}
+
 			const waktuSolatResult = await waktuSolatResponse.json();
+			console.log(waktuSolatResult)
 			setWaktuSolat(waktuSolatResult.prayers);
 			setZonSolate(zoneResult.zone);
+			input.success(true);
 
 		} catch (error) {
+			input.success(false);
 			console.error('Error fetching data:', error);
 		}};
 		fetchData();

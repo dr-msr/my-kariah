@@ -32,17 +32,17 @@ const GoPageClient = () => {
 		country : "",
 	});
 
+	const [successLoad, setSuccess] = useState(true);
+
 	var options = {
-		enableHighAccuracy: true,
+		enableHighAccuracy: false,
 		timeout: 5000,
 		maximumAge: 0,
 	  };
 
-	function loadGPS(pos: any) {
-		const CTY = lookup(pos.coords.latitude, pos.coords.longitude);
 
-		if (CTY[0] == "MYS") {
-			setNotMy(false);
+
+	function loadGPS(pos: any) {
 			setGPS({
 				lat : pos.coords.latitude,
 				long : pos.coords.longitude,
@@ -51,30 +51,24 @@ const GoPageClient = () => {
 				opacity: 0,
 				height: 0,
 			}),
-			setLoadWaktuSolat(true)
-		} else {
-			setNotMy(true);
-			setErrorCountry({
-				lat : pos.coords.latitude,
-				long : pos.coords.longitude,
-				country : CTY[0],
-			})
-			setGPS({
-				lat : 3.1319,
-				long : 101.6841,
-			})
-			setFadeOut({
-				opacity: 0,
-				height: 0,
-			}),
-			setLoadWaktuSolat(true)
-		}
+			setLoadWaktuSolat(true);
+	
 	}
 
 	function errorGPS(err: { code: any; message: any; }) {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
 		setGPSEnabled(false)
 	}
+
+	useEffect(() => {
+		const CTY = lookup(gps.lat, gps.long);
+		setNotMy(true);
+		setErrorCountry({
+				lat : gps.lat.toString(),
+				long : gps.long.toString(),
+				country : CTY[0],
+			})
+	},[successLoad])
 
 	useEffect(() => {
 		if (navigator.geolocation) {
@@ -161,7 +155,7 @@ const GoPageClient = () => {
 
 				<div id="left" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs flex flex-col justify-between gap-2.5">
 					
-				{ notMy && (
+				{ successLoad && (
 
 					<Card id="NotMy" decoration="top" decorationColor="red">
 							<div className="flex flex-col gap-2">
@@ -182,7 +176,7 @@ const GoPageClient = () => {
 
 					
 					<Card id="waktuSolat" className="">
-						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
+						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} success={setSuccess} /> ) }
 					</Card>
 				</div>
 			
