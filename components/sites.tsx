@@ -11,9 +11,7 @@ export default async function Sites({ limit }: { limit?: number }) {
   }
   const sites = await prisma.site.findMany({
     where: {
-      user: {
-        id: session.user.id as string,
-      },
+      userId: session.user.id as string,
     },
     orderBy: {
       createdAt: "asc",
@@ -31,7 +29,7 @@ export default async function Sites({ limit }: { limit?: number }) {
     <div className="mt-20 flex flex-col items-center space-x-4">
       <h1 className="font-cal text-4xl">No Kariah Yet</h1>
       <p className="text-lg text-stone-500">
-        You do not have any kariah yet. Create one to get started.
+        You do not have any kariah yet. Create one to get started. { session.user.id }
       </p>
     </div>
   );

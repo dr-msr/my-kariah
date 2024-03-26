@@ -43,11 +43,7 @@ export const createSite = async (formData: FormData) => {
       data: {
         name,
         subdomain,
-        user: {
-          connect: {
-            id: session.user.id,
-          },
-        },
+		userId: session.user.id,
 		address,
 		placeID,
 		gpsLat,
