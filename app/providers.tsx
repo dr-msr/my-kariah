@@ -4,7 +4,6 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { ModalProvider } from "@/components/modal/provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { APIProvider } from '@vis.gl/react-google-maps';
 
 
 const queryClient = new QueryClient()
@@ -13,7 +12,6 @@ const API_KEY = (process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY as string);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-	<APIProvider apiKey={API_KEY}>
 	<QueryClientProvider client={queryClient}>
     <SessionProvider>
       <Toaster className="dark:hidden" />
@@ -21,7 +19,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ModalProvider>{children}</ModalProvider>
     </SessionProvider>
 	</QueryClientProvider>
-	</APIProvider>
 
   );
 }
