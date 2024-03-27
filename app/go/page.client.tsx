@@ -24,13 +24,7 @@ const GoPageClient = () => {
 		lat : 0,
 		long : 0,
 	})
-	const [notMy, setNotMy]	= useState(false);
-	const [errorCountry, setErrorCountry] = useState({
-		lat : "",
-		long : "",
-		country : "",
-	});
-
+	
 	var options = {
 		enableHighAccuracy: false,
 		timeout: 5000,
@@ -59,7 +53,6 @@ const GoPageClient = () => {
 		  navigator.permissions
 			.query({ name: "geolocation" })
 			.then(function (result) {
-			  console.log(result);
 			  if (result.state === "granted") {
 					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
 			  } else if (result.state === "prompt") {
@@ -70,6 +63,7 @@ const GoPageClient = () => {
 			});
 		} else {
 		  console.log("Geolocation is not supported by this browser.");
+		  setGPSEnabled(false)
 		}
 	  }, []);
 
