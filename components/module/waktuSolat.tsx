@@ -191,11 +191,20 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 			<div style={{display:"flex", flexDirection:"column", gap:10, justifyContent:'center', alignItems:'center'}}>
 	
 			{ !loadCountdown ? (	
-				<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
-	 				<p className="w-48 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-	 				<p className="w-48 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-	 				<p className="w-48 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-	 			</div>
+				<div>
+
+				 	{zonSolat != '' && 
+					<div> 
+						Loading Zon Solat.. <br />
+						{zonSolat}
+					</div>}
+					<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
+						<p className="w-48 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+						<p className="w-48 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+						<p className="w-48 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+					</div>
+				</div>
+
 			) : null}
 
 			{ showError && (
