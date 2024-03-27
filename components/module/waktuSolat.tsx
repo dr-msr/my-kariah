@@ -192,13 +192,13 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	
 			{ !loadCountdown ? (	
 				<div>
-
-				 	{zonSolat != '' && 
-					<div> 
-						Loading Zon Solat.. <br />
-						<Text style={{fontSize:10}}>{getDaerahByJakimCode(zonSolat)}</Text>
-					</div>}
 					<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
+						{ zonSolat != '' && 
+							<div className="my-1"> 
+								<div>Loading Zon Solat.. </div>
+								<div><Subtitle>{zonSolat} : {getDaerahByJakimCode(zonSolat)}</Subtitle></div>				
+							</div>
+						}
 						<p className="w-48 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
 						<p className="w-48 h-10 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
 						<p className="w-48 h-4 mt-2 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
