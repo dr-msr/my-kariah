@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { Transition } from '@headlessui/react'
 import { OverlayArrow, Tooltip, TooltipTrigger, Button } from "react-aria-components";
 import getDaerahByJakimCode, { getZoneFromGPS } from "@/lib/waktuSolat";
+import NavSearch from "../nav-search";
 
 interface WaktuSolatProps {
 	gpsLat : number | null,
 	gpsLng : number | null,
-	success? : (value: boolean) => void | undefined
   }
 
 interface WaktuSolatIF {
@@ -24,6 +24,7 @@ interface WaktuSolatIF {
   }
 
 const WaktuSolat = (input :  WaktuSolatProps) => {
+	const lookup = require("coordinate_to_country");
 	const [waktuSolat, setWaktuSolat] = useState<WaktuSolatIF[]>([]);
 	const [currentTime, setCurrentTime] = useState<Date>();
 	const [timerCountdown, setTimerCountdown] = useState('');
@@ -34,6 +35,8 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	const [statusCountdown, setStatusCountdown] = useState('');
 	const [loadCountdown, setLoadingCountdown] = useState(false);
 	const [zonSolat, setZonSolate] = useState('')
+	const [showError, setShowError] = useState(false);
+
 
 	function getTimerCountdown( current : number, upcoming : number){
 		const date1 = new Date(current * 1000);
@@ -160,40 +163,25 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	useEffect(() => {
 		const fetchData = async () => {
 		try {
-			var zoneResult = getZoneFromGPS(input.gpsLng, input.gpsLat)
+			const zoneResult = getZoneFromGPS(input.gpsLng, input.gpsLat)
 			if (zoneResult == null) { 
-				if(input.success) {
-					input.success(false);
-				}				
-				zoneResult = {
-					zone : "WLY01",
-					state : "",
-					district : "",
-				};
+				throw new Error('Unable to get Zone information');
 			}
 
 			const url2 = "https://api.waktusolat.app/v2/solat/" + zoneResult.zone;
 			const waktuSolatResponse = await fetch(encodeURI(url2));
-		
 	  
 			if (!waktuSolatResponse.ok) {
-				if(input.success) {
-					input.success(false);
-				}			  	
-				throw new Error('Waktu Solat network response was not ok');
+			  throw new Error('Waktu Solat network response was not ok');
 			}
-
 			const waktuSolatResult = await waktuSolatResponse.json();
 			setWaktuSolat(waktuSolatResult.prayers);
 			setZonSolate(zoneResult.zone);
-			if(input.success) {
-				input.success(false);
-			}
+
 		} catch (error) {
-			if(input.success) {
-				input.success(false);
-			}
-						console.error('Error fetching data:', error);
+			console.error('Error fetching data:', error);
+			setShowError(true);
+			setLoadingCountdown(true)
 		}};
 		fetchData();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -210,8 +198,24 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 	 			</div>
 			) : null}
 
+			{ showError && (
+				<div className="flex flex-col gap-2">
+				<code className="border w-full px-2 text-sm mt-2 text-gray-400">
+					GPS Latitude : {input.gpsLat} <br />
+					GPS Longitude : {input.gpsLng}<br />
+					Country Detected : {lookup(input.gpsLat, input.gpsLng)} <br />
+				</code>
+
+				<Text>
+					<span className="text-red-400">Solat.Today only works in Malaysia. Please select manually the following Kariah : </span>
+				</Text>
+				<NavSearch />
+
+				</div>
+			)}
+
 			<Transition 
-				show={loadCountdown}
+				show={(loadCountdown && !showError)}
 				enter="transition-opacity duration-1000"
 				enterFrom="opacity-0"
 				enterTo="opacity-100"

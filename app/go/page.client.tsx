@@ -14,7 +14,6 @@ import FooterGo from "@/components/footerGo";
 
 
 const GoPageClient = () => {
-	const lookup = require("coordinate_to_country");
 	const [gpsEnabled, setGPSEnabled] = useState(true);
 	const [fadeOut, setFadeOut] = React.useState({
 		opacity: 1,
@@ -32,15 +31,11 @@ const GoPageClient = () => {
 		country : "",
 	});
 
-	const [successLoad, setSuccess] = useState(false);
-
 	var options = {
 		enableHighAccuracy: false,
 		timeout: 5000,
 		maximumAge: 0,
 	  };
-
-
 
 	function loadGPS(pos: any) {
 			setGPS({
@@ -51,8 +46,7 @@ const GoPageClient = () => {
 				opacity: 0,
 				height: 0,
 			}),
-			setLoadWaktuSolat(true);
-	
+			setLoadWaktuSolat(true)
 	}
 
 	function errorGPS(err: { code: any; message: any; }) {
@@ -61,23 +55,13 @@ const GoPageClient = () => {
 	}
 
 	useEffect(() => {
-		const CTY = lookup(gps.lat, gps.long);
-		setNotMy(true);
-		setErrorCountry({
-				lat : gps.lat.toString(),
-				long : gps.long.toString(),
-				country : CTY[0],
-			})
-	},[successLoad])
-
-	useEffect(() => {
 		if (navigator.geolocation) {
 		  navigator.permissions
 			.query({ name: "geolocation" })
 			.then(function (result) {
 			  console.log(result);
 			  if (result.state === "granted") {
-					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);
+					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
 			  } else if (result.state === "prompt") {
 					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
 			  } else if (result.state === "denied") {
@@ -154,29 +138,10 @@ const GoPageClient = () => {
 		  	<div id="container" className="flex flex-col gap-2.5 lg:flex-row w-3/4 max-w-screen-md gap-2.5">
 
 				<div id="left" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs flex flex-col justify-between gap-2.5">
-					
-				{ successLoad && (
-
-					<Card id="NotMy" decoration="top" decorationColor="red">
-							<div className="flex flex-col gap-2">
-							<code className="border w-full px-2 text-sm mt-2 text-gray-400">
-								GPS Latitude : {errorCountry.lat} <br />
-								GPS Longitude : {errorCountry.long}<br />
-								Country Detected : {errorCountry.country}
-							</code>
-
-							<Text>
-								<span className="text-red-400">Your location is not in Malaysia. </span>
-								We have defaulted the Prayer Times to <span className="font-bold">Kuala Lumpur</span>.
-							</Text>
-
-							</div>
-					</Card>
-				)}
 
 					
 					<Card id="waktuSolat" className="">
-						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} success={setSuccess} /> ) }
+						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
 					</Card>
 				</div>
 			
