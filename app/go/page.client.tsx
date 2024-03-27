@@ -100,7 +100,23 @@ const GoPageClient = () => {
 			</div>
 		) : null }
 
-			<Lottie
+			<div className="max-w-xs mx-auto w-full my-4 md:w-3/4 max-w-screen-md">
+				<HeaderGo />
+			</div>
+
+			
+
+		<Transition 
+				show={gpsEnabled}
+				enter="transition-opacity duration-1000"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="transition-opacity duration-1000"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
+			>
+
+<Lottie
 			style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
 			isClickToPauseDisabled={true}
 			options = {{
@@ -115,20 +131,8 @@ const GoPageClient = () => {
 			width={100} 
 			/>
 
-		<Transition 
-				show={gpsEnabled}
-				enter="transition-opacity duration-1000"
-				enterFrom="opacity-0"
-				enterTo="opacity-100"
-				leave="transition-opacity duration-1000"
-				leaveFrom="opacity-100"
-				leaveTo="opacity-0"
-			>
+		<div className="flex flex-col items-center justify-center gap-2.5">
 
-		<div className="flex mt-4 flex-col items-center justify-center gap-2.5">
-			<div className="max-w-xs mx-auto w-full md:w-3/4 max-w-screen-md">
-				<HeaderGo />
-			</div>
 			
 			
 

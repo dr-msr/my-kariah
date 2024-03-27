@@ -196,7 +196,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 				 	{zonSolat != '' && 
 					<div> 
 						Loading Zon Solat.. <br />
-						{zonSolat}
+						<Text style={{fontSize:10}}>{getDaerahByJakimCode(zonSolat)}</Text>
 					</div>}
 					<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
 						<p className="w-48 h-4 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
