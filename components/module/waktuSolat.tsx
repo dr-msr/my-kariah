@@ -195,7 +195,7 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 					<div className="w-full max-w-md mx-auto animate-pulse p-1 flex flex-col items-center">
 						{ zonSolat != '' && 
 							<div className="my-1"> 
-								<div>Loading Zon Solat.. </div>
+								<div>Retrieving Waktu Solat </div>
 								<div><Subtitle>{zonSolat} : {getDaerahByJakimCode(zonSolat)}</Subtitle></div>				
 							</div>
 						}
