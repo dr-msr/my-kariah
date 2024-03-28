@@ -48,6 +48,7 @@ const GoPageClient = () => {
 	function errorGPS(err: { code: any; message: any; }) {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
 		setGPSEnabled(false)
+		setLoading(false)
 	}
 
 	useEffect(() => {
@@ -56,16 +57,20 @@ const GoPageClient = () => {
 			.query({ name: "geolocation" })
 			.then(function (result) {
 			  if (result.state === "granted") {
-					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
+					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS);
 			  } else if (result.state === "prompt") {
-					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS, options);
+					navigator.geolocation.getCurrentPosition(loadGPS, errorGPS,{
+						timeout: 4000,
+					});
 			  } else if (result.state === "denied") {
 					setGPSEnabled(false)
+					setLoading(false)
 			  }
 			});
 		} else {
 		  console.log("Geolocation is not supported by this browser.");
 		  setGPSEnabled(false)
+		  setLoading(false)
 		}
 	  }, []);
 
