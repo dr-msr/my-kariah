@@ -233,6 +233,8 @@ const WaktuSolat = (input :  WaktuSolatProps) => {
 				leaveTo="opacity-0"
 			>
 
+
+
 				<Card className="w-full mx-auto" style={{padding:10}} decoration="top" decorationColor={statusCountdown}>
 					<div style={{display:'flex', flexDirection:'column', gap:5, justifyContent:'space-between', alignItems:'center'}}>
 							<Text>Upcoming : {nextPrayer.prayer} - {nextPrayer.time} </Text>
