@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Text } from "@tremor/react";
+import { Card, Subtitle, Text } from "@tremor/react";
 import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import loadingAnim from '../../public/assets/anims/locateGPS.json';
@@ -24,6 +24,7 @@ const GoPageClient = () => {
 		lat : 0,
 		long : 0,
 	})
+	const [isLoading, setLoading] = useState(true);
 	
 	var options = {
 		enableHighAccuracy: false,
@@ -41,6 +42,7 @@ const GoPageClient = () => {
 				height: 0,
 			}),
 			setLoadWaktuSolat(true)
+			setLoading(false)
 	}
 
 	function errorGPS(err: { code: any; message: any; }) {
@@ -102,7 +104,34 @@ const GoPageClient = () => {
 
 			<div className="max-w-xs mx-auto w-full my-4 md:w-3/4 max-w-screen-md">
 				<HeaderGo />
+
+				{ isLoading && ( 
+					<div className="mt-2">
+						<Lottie
+							style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
+							isClickToPauseDisabled={true}
+							options = {{
+							loop: true,
+							autoplay: true,
+							animationData: loadingAnim,
+							rendererSettings: {
+								preserveAspectRatio: "xMidYMid slice"
+							}
+							}}
+							height={100}
+							width={100} 
+						/>
+
+
+					<Card className="p-2">
+						<Subtitle>Obtaining GPS information..</Subtitle>
+					</Card>
+					</div>
+				)}
+
 			</div>
+
+
 
 			
 
@@ -116,21 +145,7 @@ const GoPageClient = () => {
 				leaveTo="opacity-0"
 			>
 
-<Lottie
-			style ={{transition: 'opacity 0.3s, height 0.3s', ...fadeOut}}
-			isClickToPauseDisabled={true}
-			options = {{
-			  loop: true,
-			  autoplay: true,
-			  animationData: loadingAnim,
-			  rendererSettings: {
-				preserveAspectRatio: "xMidYMid slice"
-			  }
-			}}
-			height={100}
-			width={100} 
-			/>
-
+			
 		<div className="flex flex-col items-center justify-center gap-2.5">
 
 			
@@ -141,9 +156,11 @@ const GoPageClient = () => {
 				<div id="left" className="max-w-xs mx-auto bg-gray w-full shrink-0 lg:max-w-xs flex flex-col justify-between gap-2.5">
 
 					
-					<Card id="waktuSolat" className="">
-						{ loadWaktuSolat && (<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> ) }
-					</Card>
+					{ loadWaktuSolat && ( 
+						<Card id="waktuSolat" className="">
+							<WaktuSolat gpsLat={gps.lat} gpsLng={gps.long} /> 
+						</Card>
+					)}
 				</div>
 			
 				{/* <Card id="secondCard" className="mx-auto bg-gray w-full max-w-xs lg:max-w-full grow">
